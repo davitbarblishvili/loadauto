@@ -1,11 +1,37 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
 import time
 import unittest
 import json
 
 class acv(unittest.TestCase):
 
+    def initDatabase(self):
+
+        cred = credentials.Certificate("./acvdatabase-firebase-adminsdk-er7dp-d4bdc9c2cf.json")
+        firebase_admin.initialize_app(cred)
+        
+
+    def addData(self, load):
+        data = {
+            u'staged': True
+        }
+        db = firestore.client()
+        db.collection(u'loadIds').document(load).set(data)
+
+    def checkData(self, load):
+        db = firestore.client()
+        doc_ref = db.collection('loadIds').document(load)
+        doc = doc_ref.get()
+        if doc.exists:
+            return True
+        else:
+            return False
+
+        
     def setUp(self):
         self.webdriver = webdriver.Chrome(executable_path=r"/Users/davitbarblishvili/Desktop/acv/chromedriver")
         self.webdriver.get("https://transport.acvauctions.com/jobs/available.php")
@@ -15,7 +41,7 @@ class acv(unittest.TestCase):
 
     def login(self):
                
-        time.sleep(3)
+        time.sleep(2)
         username = self.webdriver.find_element_by_xpath("//input[@name='email']")
         self.webdriver.execute_script("arguments[0].click();", username)
         username.send_keys("righttimenyc@yahoo.com")
@@ -30,7 +56,7 @@ class acv(unittest.TestCase):
         self.webdriver.close()
         
     def getUrl(self):
-        time.sleep(2)
+        time.sleep(1)
         self.webdriver.find_element_by_xpath("//input[@name='Submit3']").click()
     
     def refreshPage(self):
@@ -38,6 +64,7 @@ class acv(unittest.TestCase):
         self.webdriver.find_element_by_xpath("//div[@class='arial14']/a[1]").click()
     
     def stage_load(self,load):
+        acv.addData(load)
         acv.setUp()
         acv.login()
         time.sleep(1)
@@ -47,7 +74,6 @@ class acv(unittest.TestCase):
 
         filter_tab = self.webdriver.find_element_by_xpath("//input[@name='Filter']")
         self.webdriver.execute_script("arguments[0].click();", filter_tab)
-
 
         time.sleep(1)
         check_button = self.webdriver.find_element_by_xpath("(//input[@type= 'checkbox'])[2]")
@@ -61,7 +87,6 @@ class acv(unittest.TestCase):
         return
 
         
-
 
     def iterateTr(self):
         time.sleep(1)
@@ -78,14 +103,17 @@ class acv(unittest.TestCase):
                     info_array.append(td.text)
 
             if 10000 <= int(info_array[7]) <= 12000 and info_array[3] == "Good":
-                        acv.stage_load(info_array[0])
+                        if acv.checkData(info_array[0]) == False:
+                            acv.stage_load(info_array[0])
 
         acv.close()
         return
            
-               
+
+
 if __name__ == "__main__":
     acv = acv() 
+    acv.initDatabase()
     acv.setUp()
     acv.login()
     acv.iterateTr()
