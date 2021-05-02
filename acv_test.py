@@ -5,11 +5,13 @@ import unittest
 import json
 
 class acv(unittest.TestCase):
-    url = ""
 
     def setUp(self):
         self.webdriver = webdriver.Chrome(executable_path=r"/Users/davitbarblishvili/Desktop/acv/chromedriver")
         self.webdriver.get("https://transport.acvauctions.com/jobs/available.php")
+    
+    def close(self):
+        self.webdriver.close()
 
     def login(self):
                
@@ -34,6 +36,32 @@ class acv(unittest.TestCase):
     def refreshPage(self):
         time.sleep(1)
         self.webdriver.find_element_by_xpath("//div[@class='arial14']/a[1]").click()
+    
+    def stage_load(self,load):
+        acv.setUp()
+        acv.login()
+        time.sleep(1)
+        search_tab = self.webdriver.find_element_by_xpath("//input[@name='search_txt']")
+        self.webdriver.execute_script("arguments[0].click();", search_tab)
+        search_tab.send_keys(load)
+
+        filter_tab = self.webdriver.find_element_by_xpath("//input[@name='Filter']")
+        self.webdriver.execute_script("arguments[0].click();", filter_tab)
+
+
+        time.sleep(1)
+        check_button = self.webdriver.find_element_by_xpath("(//input[@type= 'checkbox'])[2]")
+        self.webdriver.execute_script("arguments[0].click();", check_button)
+
+        if self.webdriver.find_element_by_xpath("(//input[@type= 'checkbox'])[2]").is_selected():
+            select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
+            self.webdriver.execute_script("arguments[0].click();", select_button)
+        
+        acv.close()
+        return
+
+        
+
 
     def iterateTr(self):
         time.sleep(1)
@@ -43,26 +71,19 @@ class acv(unittest.TestCase):
         load_dict = {}
         self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
         table = self.webdriver.find_element_by_xpath("//table[2]")
-        test = 0
         for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
-            idx = 0
-            temp_dict = {}
+            info_array = []
             for td in row.find_elements_by_xpath(".//td[@class='arial14']"):
-                if td.text and idx >= 1:
-                    temp_dict[keys[idx]] = td.text
-                    idx += 1
-                   
-                if td.text and idx == 0:
-                    load_dict[td.text] = temp_dict
-                    idx += 1
-                
+                if td.text:
+                    info_array.append(td.text)
 
-        with open('loads.json', 'w') as fp:
-            json.dump(load_dict, fp)
+            if 10000 <= int(info_array[7]) <= 12000 and info_array[3] == "Good":
+                        acv.stage_load(info_array[0])
 
-
-
-
+        acv.close()
+        return
+           
+               
 if __name__ == "__main__":
     acv = acv() 
     acv.setUp()
