@@ -51,19 +51,12 @@ class acv(unittest.TestCase):
         password.send_keys("Tsikara95#")
         password.send_keys(Keys.ENTER)
 
-       
-    def tearDown(self):
-        self.webdriver.close()
         
-    def getUrl(self):
-        time.sleep(1)
-        self.webdriver.find_element_by_xpath("//input[@name='Submit3']").click()
-    
     def refreshPage(self):
         time.sleep(1)
         self.webdriver.find_element_by_xpath("//div[@class='arial14']/a[1]").click()
     
-    def stage_load(self,load):
+    def stage_load_all_loads(self,load):
         acv.addData(load)
         acv.setUp()
         acv.login()
@@ -86,31 +79,96 @@ class acv(unittest.TestCase):
         acv.close()
         return
     
-    def one_way(pick_up):
-        pick_up_filter = self.webdriver.find_element_by_xpath("//select[@name='p_filter']/option[text()='"+ pick_up + "']")
+    def one_way(self,pick_up):
+        acv.setUp()
+        acv.login()
+        time.sleep(1)
+        self.webdriver.find_element_by_xpath("//select[@name='p_filter']/option[text()='"+ pick_up + "']").click()
         filter_tab = self.webdriver.find_element_by_xpath("//input[@name='Filter']")
         self.webdriver.execute_script("arguments[0].click();", filter_tab)
-        acv.iterateTr()
+        acv.iterateStatesOneWay(pick_up)
 
+    def two_way(self, pick_up, delivery):
+        acv.setUp()
+        acv.login()
+        time.sleep(1)
+        self.webdriver.find_element_by_xpath("//select[@name='p_filter']/option[text()='"+ pick_up + "']").click()
+        self.webdriver.find_element_by_xpath("//select[@name='d_filter']/option[text()='"+ delivery + "']").click()
+        filter_tab = self.webdriver.find_element_by_xpath("//input[@name='Filter']")
+        self.webdriver.execute_script("arguments[0].click();", filter_tab)
+        acv.iterateStatesTwoWay(pick_up, delivery)
 
-        
+    def local_zips(self,s_zip, e_zip):
+        acv.setUp()
+        acv.login()
+        acv.iterateLocal(s_zip,e_zip)
 
-    def iterateTr(self):
-        keys = ["order_id","date","vehicle","inop?","P_address","P_city","P_state","P_zip","Daddress",
-        "D_city","D_state","D_zip","Distance","Mayuti"]
-        load_dict = {}
+    
+    def iterateStatesTwoWay(self,pick_up,delivery):
         self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
         table = self.webdriver.find_element_by_xpath("//table[2]")
         for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
-            info_array = []
-            for td in row.find_elements_by_xpath(".//td[@class='arial14']"):
+            info_array = [] 
+            check_box = row.find_elements_by_xpath(".//input[@type='checkbox']")
+            for td in row.find_elements_by_xpath(".//td[@class='arial14']"):      
                 if td.text:
                     info_array.append(td.text)
+            if acv.checkData(info_array[0]) == False:
+                distance = info_array[12]
+                pay = info_array[13][1:]
+                if float(pay)/float(distance) >= 2.00 and info_array[3] == "Good":
+                    self.webdriver.execute_script("arguments[0].click();", check_box[1])
+                    select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
+                    acv.addData(info_array[0])
+                    self.webdriver.execute_script("arguments[0].click();", select_button)
+                    two_way(pick_up,delivery)
+                                
+        acv.close()
+        return
 
-            if 10000 <= int(info_array[7]) <= 12000 and info_array[3] == "Good":
-                        if acv.checkData(info_array[0]) == False:
-                            acv.stage_load(info_array[0])
+    def iterateStatesOneWay(self,pick_up):
+        self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
+        table = self.webdriver.find_element_by_xpath("//table[2]")
+        for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
+            info_array = [] 
+            check_box = row.find_elements_by_xpath(".//input[@type='checkbox']")
+            for td in row.find_elements_by_xpath(".//td[@class='arial14']"):      
+                if td.text:
+                    info_array.append(td.text)
+            if acv.checkData(info_array[0]) == False:
+                distance = info_array[12]
+                pay = info_array[13][1:]
+                if float(pay)/float(distance) >= 2.00 and info_array[3] == "Good":
+                    self.webdriver.execute_script("arguments[0].click();", check_box[1])
+                    select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
+                    acv.addData(info_array[0])
+                    self.webdriver.execute_script("arguments[0].click();", select_button)
+                    one_way(pick_up)
+                                
+        acv.close()
+        return
 
+
+    def iterateLocal(self,s_zip,e_zip):
+        self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
+        table = self.webdriver.find_element_by_xpath("//table[2]")
+        for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
+            info_array = [] 
+            check_box = row.find_elements_by_xpath(".//input[@type='checkbox']")
+            for td in row.find_elements_by_xpath(".//td[@class='arial14']"):      
+                if td.text:
+                    info_array.append(td.text)
+            if acv.checkData(info_array[0]) == False:
+                distance = info_array[12]
+                pay = info_array[13][1:]
+                if float(pay)/float(distance) >= 2.00:
+                    if s_zip <= int(info_array[7]) <= e_zip and info_array[3] == "Good":
+                        self.webdriver.execute_script("arguments[0].click();", check_box[1])
+                        select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
+                        acv.addData(info_array[0])
+                        self.webdriver.execute_script("arguments[0].click();", select_button)
+                        acv.local_zips(s_zip,e_zip)
+                                
         acv.close()
         return
            
@@ -119,9 +177,17 @@ class acv(unittest.TestCase):
 if __name__ == "__main__":
     acv = acv() 
     acv.initDatabase()
-    acv.setUp()
-    acv.login()
-    acv.one_way("NY")
+
+
+    acv.two_way("NY","TX")
+    acv.two_way("NJ","TX")
+    acv.two_way("PA","TX")
+
+
+
+
+
+   
     
    
     
