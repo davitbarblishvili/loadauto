@@ -6,8 +6,25 @@ from firebase_admin import firestore
 import time
 import unittest
 import json
+import os
+from twilio.rest import Client
 
 class acv(unittest.TestCase):
+
+    
+
+    def sendMessage(self,textMessage):
+        account_sid = 'ACfdaf54ef106ea4f48fae9e78588cd69e'
+        auth_token = 'fb15a4c98079021641376ca358215f79'
+        client = Client(account_sid, auth_token)
+      
+        message = client.messages \
+            .create(
+         body= textMessage,
+         from_='+13016793819',
+         to='+19294997605'
+     ) 
+
 
     def initDatabase(self):
 
@@ -115,13 +132,18 @@ class acv(unittest.TestCase):
                     info_array.append(td.text)
             if acv.checkData(info_array[0]) == False:
                 distance = info_array[12]
+                if distance == '---':
+                    continue
                 pay = info_array[13][1:]
                 if float(pay)/float(distance) >= 2.00 and info_array[3] == "Good":
                     self.webdriver.execute_script("arguments[0].click();", check_box[1])
                     select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
+                    message = "Load ID is: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
+                    message += "Delivery is: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13]
+                    acv.sendMessage(message)
                     acv.addData(info_array[0])
                     self.webdriver.execute_script("arguments[0].click();", select_button)
-                    two_way(pick_up,delivery)
+                    acv.two_way(pick_up,delivery)
                                 
         acv.close()
         return
@@ -143,7 +165,7 @@ class acv(unittest.TestCase):
                     select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
                     acv.addData(info_array[0])
                     self.webdriver.execute_script("arguments[0].click();", select_button)
-                    one_way(pick_up)
+                    acv.one_way(pick_up)
                                 
         acv.close()
         return
@@ -177,11 +199,10 @@ class acv(unittest.TestCase):
 if __name__ == "__main__":
     acv = acv() 
     acv.initDatabase()
+    acv.two_way("NY", "NJ")
 
 
-    acv.two_way("NY","TX")
-    acv.two_way("NJ","TX")
-    acv.two_way("PA","TX")
+    
 
 
 
