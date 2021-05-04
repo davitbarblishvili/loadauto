@@ -85,12 +85,17 @@ class acv(unittest.TestCase):
         
         acv.close()
         return
+    
+    def one_way(pick_up):
+        pick_up_filter = self.webdriver.find_element_by_xpath("//select[@name='p_filter']/option[text()='"+ pick_up + "']")
+        filter_tab = self.webdriver.find_element_by_xpath("//input[@name='Filter']")
+        self.webdriver.execute_script("arguments[0].click();", filter_tab)
+        acv.iterateTr()
+
 
         
 
     def iterateTr(self):
-        time.sleep(1)
-        acv.refreshPage()
         keys = ["order_id","date","vehicle","inop?","P_address","P_city","P_state","P_zip","Daddress",
         "D_city","D_state","D_zip","Distance","Mayuti"]
         load_dict = {}
@@ -116,7 +121,8 @@ if __name__ == "__main__":
     acv.initDatabase()
     acv.setUp()
     acv.login()
-    acv.iterateTr()
+    acv.one_way("NY")
+    
    
     
 
