@@ -17,13 +17,15 @@ class acv(unittest.TestCase):
         account_sid = 'ACfdaf54ef106ea4f48fae9e78588cd69e'
         auth_token = 'fb15a4c98079021641376ca358215f79'
         client = Client(account_sid, auth_token)
-      
-        message = client.messages \
-            .create(
-         body= textMessage,
-         from_='+13016793819',
-         to='+19294997605'
-     ) 
+
+        numbers_to_message = ['+19294997605']
+        for number in numbers_to_message:
+            message = client.messages \
+                .create(
+            body= textMessage,
+            from_= '+13016793819',
+            to= number
+            ) 
 
 
     def initDatabase(self):
@@ -138,8 +140,8 @@ class acv(unittest.TestCase):
                 if float(pay)/float(distance) >= 2.00 and info_array[3] == "Good":
                     self.webdriver.execute_script("arguments[0].click();", check_box[1])
                     select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
-                    message = "Load ID is: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
-                    message += "Delivery is: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13]
+                    message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
+                    message += "Delivery: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13]
                     acv.sendMessage(message)
                     acv.addData(info_array[0])
                     self.webdriver.execute_script("arguments[0].click();", select_button)
@@ -163,6 +165,9 @@ class acv(unittest.TestCase):
                 if float(pay)/float(distance) >= 2.00 and info_array[3] == "Good":
                     self.webdriver.execute_script("arguments[0].click();", check_box[1])
                     select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
+                    message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
+                    message += "Delivery: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13]
+                    acv.sendMessage(message)
                     acv.addData(info_array[0])
                     self.webdriver.execute_script("arguments[0].click();", select_button)
                     acv.one_way(pick_up)
@@ -187,6 +192,9 @@ class acv(unittest.TestCase):
                     if s_zip <= int(info_array[7]) <= e_zip and info_array[3] == "Good":
                         self.webdriver.execute_script("arguments[0].click();", check_box[1])
                         select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
+                        message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
+                        message += "Delivery: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13]
+                        acv.sendMessage(message)
                         acv.addData(info_array[0])
                         self.webdriver.execute_script("arguments[0].click();", select_button)
                         acv.local_zips(s_zip,e_zip)
