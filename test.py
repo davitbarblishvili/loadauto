@@ -7,7 +7,7 @@ app = Flask(__name__)
 @app.route('/')
 def output():
 	# serve index template
-	return render_template('index.html', name='Joe')
+	return render_template('acvlanding.html', name='Joe')
 @app.route('/receiver', methods = ['POST'])
 def worker():
 	# read json + reply

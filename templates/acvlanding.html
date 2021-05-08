@@ -21,40 +21,6 @@
 
 	<!-- CSS Just for demo purpose, don't include it in your project -->
 	<link href="assets/css/demo.css" rel="stylesheet" />
-	<script>
-	function myFunction() {
-  	var pick_up = document.getElementById("pickup");
-  	var delivery = document.getElementById("delivery");
-
-  	document.getElementById("demo").innerHTML = delivery.value;
-
-}
-</script>
-<script type="text/javascript">
-	fetch('/hello', {
-
-    // Declare what type of data we're sending
-    headers: {
-      'Content-Type': 'application/json'
-    },
-
-    // Specify the method
-    method: 'POST',
-
-    // A JSON payload
-    body: JSON.stringify({
-        "greeting": "hello"
-    })
-}).then(function (response) { // At this point, Flask has printed our JSON
-    return response.text();
-}).then(function (text) {
-
-    console.log('POST response: ');
-
-    // Should be 'OK' if everything was successful
-    console.log(text);
-});
-</script>
 </head>
 
 <body>
@@ -255,7 +221,7 @@
 	                            	<div class="pull-right">
 	                                    <input type='button' class='btn btn-next btn-fill btn-danger btn-wd' name='next' value='Next' />
 	                                    <input type='button' class='btn btn-finish btn-fill btn-danger btn-wd' name='finish' value='Finish' 
-	                                    onclick="myFunction()" />
+	                                    />
 	                                </div>
 	                                <div class="pull-left">
 	                                    <input type='button' class='btn btn-previous btn-fill btn-default btn-wd' name='previous' value='Previous' />
