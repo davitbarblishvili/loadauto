@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import firebase_admin
+from selenium.webdriver.chrome.options import Options
 from firebase_admin import credentials
 from firebase_admin import firestore
 import time
@@ -9,9 +10,9 @@ import json
 import os
 from twilio.rest import Client
 
+
 class acv(unittest.TestCase):
 
-    
 
     def sendMessage(self,textMessage):
         account_sid = 'ACfdaf54ef106ea4f48fae9e78588cd69e'
@@ -52,7 +53,9 @@ class acv(unittest.TestCase):
 
         
     def setUp(self):
-        self.webdriver = webdriver.Chrome(executable_path=r"/Users/davitbarblishvili/Desktop/acv/chromedriver")
+        option = webdriver.ChromeOptions()
+        option.add_argument('headless')
+        self.webdriver = webdriver.Chrome(executable_path=r"/Users/davitbarblishvili/Desktop/acv/chromedriver",options=option)
         self.webdriver.get("https://transport.acvauctions.com/jobs/available.php")
     
     def close(self):
