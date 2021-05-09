@@ -227,7 +227,6 @@
 	                                </div>
 	                                <div class="pull-left">
 	                                    <input type='button' class='btn btn-previous btn-fill btn-default btn-wd' name='previous' value='Previous' />
-
 	                                <div class="clearfix"></div>
 	                        	</div>
 		                    </form>
@@ -246,17 +245,44 @@
 	window.onload = function() {
 		// setup the button click
 		document.getElementById("theButton").onclick = function() {
-			doWork()
+			
 			var property = document.getElementById("theButton");
-			property.style.background = '#0000A0';
-			property.value = "Submitted!"
+			if (property.value=="Submit"){
+				property.value = "Submitted!"
+				property.style.background = '#0000A0';
+				doWork()
+			}else{
+				property.value = "Submit"
+				property.style.background = '#E15241';
+				stop()
+
+			}
+			
+			
 		};
+	}
+
+	function stop(){
+		var stopMessage = [
+		 {"pu": "stop" }
+	 ];
+    $.ajax({
+        type: 'POST',
+        url: '/receiver',
+        data: JSON.stringify (test),
+        success: function(data) { alert('data: ' + data); },
+        contentType: "application/json",
+        dataType: 'json'
+    });
+    // stop link reloading the page
+    event.preventDefault();
+
 	}
 	function doWork() {
 	 // ajax the JSON to the server
 	 var test = [
-		 {"pu":$('#pickup :selected').text() },
-		 {"del":$('#delivery :selected').text() },
+		 {"pu":$('#pickup :selected').val() },
+		 {"del":$('#delivery :selected').val() },
 		 {"minDollar":$('#mindollar').val() },
 		 {"maxDist":$('#maxdistance').val() },
 		 {"inop":$('#inop :selected').text() },

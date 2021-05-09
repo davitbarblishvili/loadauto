@@ -17,7 +17,6 @@ import random, json
 class acv(unittest.TestCase):
 
     app = Flask(__name__)
-
     @app.route('/')
     def output():
 	# serve index template
@@ -26,8 +25,11 @@ class acv(unittest.TestCase):
     @app.route('/receiver', methods = ['POST'])
     def worker():
 	# read json + reply
+
         data = request.get_json()
-        
+       
+        if str(data[0]['pu']) == "stop":
+            acv.close()
         pick_up = str(data[0]['pu'])
         deliv = str(data[1]['del'])
         dollar = str(data[2]['minDollar'])
@@ -35,6 +37,14 @@ class acv(unittest.TestCase):
         inop = str(data[4]['inop'])
         print(pick_up)
         print(deliv)
+        acv.two_way(pick_up, deliv)
+        acv.pstate = pick_up
+        acv.dstate = deliv
+        acv.dollarAmt = dollar
+        acv.distance = dist
+        acv.operable = inop
+
+       
         print(dollar)
         print(dist)
         print(inop)
@@ -235,10 +245,11 @@ class acv(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    acv = acv() 
+    acv = acv()
+    acv.initDatabase()
     acv.app.run()
-    #acv.initDatabase()
-    #acv.two_way("NY", "NJ")
+   
+   
 
 
     
