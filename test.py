@@ -16,8 +16,14 @@ def worker():
 	
 	pick_up = str(data[0]['pu'])
 	deliv = str(data[1]['del'])
+	dollar = str(data[2]['minDollar'])
+	dist = str(data[3]['maxDist'])
+	inop = str(data[4]['inop'])
 	print(pick_up)
 	print(deliv)
+	print(dollar)
+	print(dist)
+	print(inop)
 	return 'OK'
 if __name__ == '__main__':
 	# run!
