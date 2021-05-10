@@ -255,10 +255,7 @@
 				property.value = "Submit"
 				property.style.background = '#E15241';
 				stop()
-
 			}
-			
-			
 		};
 	}
 
@@ -280,9 +277,11 @@
 	}
 	function doWork() {
 	 // ajax the JSON to the server
-	 var test = [
-		 {"pu":$('#pickup :selected').val() },
-		 {"del":$('#delivery :selected').val() },
+	 var selected_pick = $("#pickup :selected").map((_, e) => e.value).get();
+	 var selected_del = $("#delivery :selected").map((_, e) => e.value).get();
+	 var load_details = [
+		 {"pu": selected_pick },
+		 {"del":selected_del },
 		 {"minDollar":$('#mindollar').val() },
 		 {"maxDist":$('#maxdistance').val() },
 		 {"inop":$('#inop :selected').text() },
@@ -290,7 +289,7 @@
     $.ajax({
         type: 'POST',
         url: '/receiver',
-        data: JSON.stringify (test),
+        data: JSON.stringify (load_details),
         success: function(data) { alert('data: ' + data); },
         contentType: "application/json",
         dataType: 'json'
