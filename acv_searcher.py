@@ -24,7 +24,6 @@ class acv(unittest.TestCase):
 
     @app.route('/receiver', methods = ['POST'])
     def worker():
-	# read json + reply
 
         data = request.get_json()
         
@@ -38,11 +37,13 @@ class acv(unittest.TestCase):
         if len(deliv) == 1 and deliv[0] == '':
             for i in pick_up:
                 acv.one_way(i,dollar,dist,inop)
+                acv.close()
+
         if len(deliv) >= 1 and deliv[0]:
-            
             for i in pick_up:
                 for j in deliv:
                     acv.two_way(i,j, dollar, dist, inop)
+                    acv.close()
        
         return 'OK'
 
@@ -146,7 +147,7 @@ class acv(unittest.TestCase):
     def two_way(self, pick_up, delivery, dollar, dist, condition):
         acv.setUp()
         acv.login()
-        time.sleep(1)
+        time.sleep(2)
         self.webdriver.find_element_by_xpath("//select[@name='p_filter']/option[text()='"+ pick_up + "']").click()
         self.webdriver.find_element_by_xpath("//select[@name='d_filter']/option[text()='"+ delivery + "']").click()
         filter_tab = self.webdriver.find_element_by_xpath("//input[@name='Filter']")
@@ -160,6 +161,12 @@ class acv(unittest.TestCase):
 
     
     def iterateStatesTwoWay(self,pick_up,delivery,dollar, dist, condition):
+        print(pick_up)
+        print(delivery)
+        print(dollar)
+        print(dist)
+        print(condition)
+        print("-----------------")
         if dollar == '' or dollar == '---':
             dollar = 0.0
         else: 
@@ -203,9 +210,9 @@ class acv(unittest.TestCase):
                         acv.addData(info_array[0])
                         self.webdriver.execute_script("arguments[0].click();", select_button)
                         acv.two_way(pick_up,delivery, dollar, dist, condition)
-                                
-        acv.close()
-        return
+                        break
+        
+                       
 
     def iterateStatesTwoWayHelper(self,pick_up,delivery, dollar, dist, condition):
         if dollar == '' or dollar == '---':
@@ -247,9 +254,9 @@ class acv(unittest.TestCase):
                     acv.addData(info_array[0])
                     self.webdriver.execute_script("arguments[0].click();", select_button)
                     acv.two_way(pick_up,delivery, dollar, dist, condition)
+                    break
                                 
-        acv.close()
-        return
+        
     
 
     def iterateStatesOneWay(self,pick_up, dollar, dist, condition):
@@ -296,9 +303,9 @@ class acv(unittest.TestCase):
                         acv.addData(info_array[0])
                         self.webdriver.execute_script("arguments[0].click();", select_button)
                         acv.one_way(pick_up,dollar,dist,condition)
+                        break
                                 
-        acv.close()
-        return
+        
     
     def iterateStatesOneWayHelper(self,pick_up, dollar, dist, condition):
         if dollar == '' or dollar == '---':
@@ -335,11 +342,9 @@ class acv(unittest.TestCase):
                     acv.addData(info_array[0])
                     self.webdriver.execute_script("arguments[0].click();", select_button)
                     acv.one_way(pick_up,dollar, dist, condition)
+                    break
                                 
-        acv.close()
-        return
-
-
+       
     def iterateLocal(self,s_zip,e_zip):
         self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
         table = self.webdriver.find_element_by_xpath("//table[2]")
@@ -362,12 +367,10 @@ class acv(unittest.TestCase):
                         acv.addData(info_array[0])
                         self.webdriver.execute_script("arguments[0].click();", select_button)
                         acv.local_zips(s_zip,e_zip)
+                        break
                                 
-        acv.close()
-        return
-           
-
-
+       
+        
 if __name__ == "__main__":
     acv = acv()
     acv.initDatabase()
