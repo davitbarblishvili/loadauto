@@ -38,10 +38,8 @@ class acv(unittest.TestCase):
         if len(deliv) == 1 and deliv[0] == '':
             for i in pick_up:
                 acv.one_way(i,dollar,dist,inop)
-        print(len(deliv))
         if len(deliv) >= 1 and deliv[0]:
-            print('came here')
-
+            
             for i in pick_up:
                 for j in deliv:
                     acv.two_way(i,j, dollar, dist, inop)
