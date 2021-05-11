@@ -88,7 +88,7 @@ class acv(unittest.TestCase):
         
     def setUp(self):
         option = webdriver.ChromeOptions()
-        option.add_argument('headless')
+        #option.add_argument('headless')
         self.webdriver = webdriver.Chrome(executable_path=r"/Users/davitbarblishvili/Desktop/acv/chromedriver",options=option)
         self.webdriver.get("https://transport.acvauctions.com/jobs/available.php")
     
@@ -184,7 +184,7 @@ class acv(unittest.TestCase):
             condition = 'INOP'
         
         if condition == 'Both' or condition == '':
-            acv.iterateStatesTwoWayHelper(pick_up, delivery, dollar, dist, condition)
+            acv.iterateStatesTwoHelper(pick_up, delivery, dollar, dist, condition)
             return
 
         self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
@@ -206,21 +206,11 @@ class acv(unittest.TestCase):
                         select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
                         message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
                         message += "Delivery: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13]
-                        message += "\nvehicle: " + info_array[2] 
                         acv.sendMessage(message)
                         acv.addData(info_array[0])
                         self.webdriver.execute_script("arguments[0].click();", select_button)
-                        acv.two_way_helper(pick_up,delivery, dollar, dist, condition)
+                        acv.two_way(pick_up,delivery, dollar, dist, condition)
                         break
-
-    def two_way_helper(self, pick_up,delivery, dollar, dist, condition):
-        acv.refreshPage()
-        time.sleep(1)
-        self.webdriver.find_element_by_xpath("//select[@name='p_filter']/option[text()='"+ pick_up + "']").click()
-        self.webdriver.find_element_by_xpath("//select[@name='d_filter']/option[text()='"+ delivery + "']").click()
-        filter_tab = self.webdriver.find_element_by_xpath("//input[@name='Filter']")
-        self.webdriver.execute_script("arguments[0].click();", filter_tab)
-        acv.iterateStatesTwoWay(pick_up, delivery, dollar, dist, condition)
         
                        
 
@@ -260,11 +250,10 @@ class acv(unittest.TestCase):
                     select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
                     message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
                     message += "Delivery: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13]
-                    message += "\nvehicle: " + info_array[2] 
                     acv.sendMessage(message)
                     acv.addData(info_array[0])
                     self.webdriver.execute_script("arguments[0].click();", select_button)
-                    acv.two_way_helper(pick_up,delivery, dollar, dist, condition)
+                    acv.two_way(pick_up,delivery, dollar, dist, condition)
                     break
                                 
         
@@ -310,19 +299,11 @@ class acv(unittest.TestCase):
                         select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
                         message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
                         message += "Delivery: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13]
-                        message += "\nvehicle: " + info_array[2] 
                         acv.sendMessage(message)
                         acv.addData(info_array[0])
                         self.webdriver.execute_script("arguments[0].click();", select_button)
-                        acv.one_way_helper(pick_up,dollar,dist,condition)
+                        acv.one_way(pick_up,dollar,dist,condition)
                         break
-    def one_way_helper(self,pick_up,dollar,dist,condition):
-        acv.refreshPage()
-        time.sleep(1)
-        self.webdriver.find_element_by_xpath("//select[@name='p_filter']/option[text()='"+ pick_up + "']").click()
-        filter_tab = self.webdriver.find_element_by_xpath("//input[@name='Filter']")
-        self.webdriver.execute_script("arguments[0].click();", filter_tab)
-        acv.iterateStatesOneWay(pick_up, dollar, dist, condition)
                                 
         
     
@@ -357,11 +338,10 @@ class acv(unittest.TestCase):
                     select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
                     message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
                     message += "Delivery: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13]
-                    message += "\nvehicle: " + info_array[2] 
                     acv.sendMessage(message)
                     acv.addData(info_array[0])
                     self.webdriver.execute_script("arguments[0].click();", select_button)
-                    acv.one_way_helper(pick_up,dollar, dist, condition)
+                    acv.one_way(pick_up,dollar, dist, condition)
                     break
                                 
        
@@ -383,7 +363,6 @@ class acv(unittest.TestCase):
                         select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
                         message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
                         message += "Delivery: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13]
-                        message += "\nvehicle: " + info_array[2] 
                         acv.sendMessage(message)
                         acv.addData(info_array[0])
                         self.webdriver.execute_script("arguments[0].click();", select_button)

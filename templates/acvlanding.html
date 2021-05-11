@@ -18,6 +18,9 @@
 	<link href="../static/assets/css/bootstrap.min.css" rel="stylesheet" />
 	<link href="../static/assets/css/material-bootstrap-wizard.css" rel="stylesheet" />
 
+	<!-- CSS Just for demo purpose, don't include it in your project -->
+	<link href="../static/assets/css/demo.css" rel="stylesheet" />
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	
 
@@ -36,23 +39,16 @@
 	        <div class="row">
 		        <div class="col-sm-8 col-sm-offset-2">
 		            <!--      Wizard container        -->
-					
 		            <div class="wizard-container">
-						<input type='button' style="float: right;" class='btn btn-next btn-fill btn-danger btn-wd' id = 'logout' name='Logout' value='Log Out' />
-		                <div class="card wizard-card" data-color="green" id="wizard">
-							
+		                <div class="card wizard-card" data-color="red" id="wizard">
 		                    <form action="" method="">
 		                <!--        You can switch " data-color="blue" "  with one of the next bright colors: "green", "orange", "red", "purple"             -->
-								
+
 		                    	<div class="wizard-header">
-								
 		                        	<h3 id = "demo" class="wizard-title">
 		                        		Book a load
 		                        	</h3>
-									
-
 		                    	</div>
-								
 								<div class="wizard-navigation">
 									<ul>
 			                            <li><a href="#details" data-toggle="tab">Locations</a></li>
@@ -241,45 +237,9 @@
 		</div> <!--  big container -->
 	</div>
 
-<!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-firestore.js"></script>
-
-<!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
-<script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-analytics.js"></script>
-
-<script>
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  var firebaseConfig = {
-    apiKey: "AIzaSyBepjkYLRtVmiJ1Q8k6Odhkq4lk3IOuF1I",
-    authDomain: "acvdatabase.firebaseapp.com",
-    projectId: "acvdatabase",
-    storageBucket: "acvdatabase.appspot.com",
-    messagingSenderId: "777263755129",
-    appId: "1:777263755129:web:01f0824d5e91371f66c9a8",
-    measurementId: "G-988CVXMRYP"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
-
-  const auth = firebase.auth();
-  const db = firebase.firestore();
-
-  db.settings({timestampsInSnapshots: true})
-</script>
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-	<script src="../static/assets/js/auth.js"></script>
-	
-
 
 </body>
 <script type="text/javascript">
-
 	// setup some JSON to use
 
 	window.onload = function() {
