@@ -66,6 +66,16 @@ document.getElementById("loginbtn").addEventListener("click", function() {
 });
 
 
+const logoutBtn = document.getElementById('logoutbtn');
+logoutBtn.addEventListener('click',(e)=> {
+    e.preventDefault();
+    auth.signOut().then(() => {
+        console.log("use signed out");
+        $('#loginModal').modal('show');
+    });
+});
+
+
 $(function () {
     $('#signupbtn').attr('disabled', true);
     $('#Spassword_confirmation').change(function () {

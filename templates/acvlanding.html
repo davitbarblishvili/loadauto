@@ -95,7 +95,7 @@
 <script type="text/javascript">
 
     $(document).ready(function(){
-        openLoginModal();
+       openLoginModal();
     });
 </script>
 
@@ -110,13 +110,16 @@
 	    <!--   Big container   -->
 	    <div class="container">
 	        <div class="row">
+				
 		        <div class="col-sm-8 col-sm-offset-2">
 		            <!--      Wizard container        -->
 		            <div class="wizard-container">
-		                <div class="card wizard-card" data-color="red" id="wizard">
-		                    <form action="" method="">
-		                <!--        You can switch " data-color="blue" "  with one of the next bright colors: "green", "orange", "red", "purple"             -->
-
+						<input id = "logoutbtn" type='button' class='btn btn-next btn-fill btn-danger btn-wd' name='logout' value='Log out' style="float: right;" />
+		                <div class="card wizard-card" data-color="blue" id="wizard">
+						
+						
+		                    <form action="" method="">		
+		                <!--        You can switch " data-color="blue" "  with one of the next bright colors: "green", "orange", "red", "purple"             -->	
 		                    	<div class="wizard-header">
 		                        	<h3 id = "demo" class="wizard-title">
 		                        		Book a load
