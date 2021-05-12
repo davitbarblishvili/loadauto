@@ -56,7 +56,8 @@
                                     <form id = "login-form" accept-charset="UTF-8">
                                     <input id="email" class="form-control" type="text" placeholder="Email" name="email" required>
                                     <input id="password" class="form-control" type="password" placeholder="Password" name="password" required>
-                                    <input class="btn btn-default btn-login" type="button" value="Login" id="loginbtn">
+									<input type="checkbox" value="lsRememberMe" id="rememberMe"> <label for="rememberMe">Remember me</label>
+                                    <input class="btn btn-default btn-login" type="button" value="Login" onclick="lsRememberMe()" id="loginbtn">
                                     </form>
                                 </div>
                              </div>
@@ -95,7 +96,7 @@
 <script type="text/javascript">
 
     $(document).ready(function(){
-       openLoginModal();
+    openLoginModal();
     });
 </script>
 
