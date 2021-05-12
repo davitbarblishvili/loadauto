@@ -260,17 +260,22 @@
 		                                <h4 class="info-text">What type of load would you want? </h4>
 		                                <div class="row">
 		                                    <div class="col-sm-10 col-sm-offset-1">
-												<div class="col-sm-4">
+												<div class="col-sm-3">
 													<div class="form-group label-floating">
-													  <input type="number" class="form-control" id="mindollar" aria-describedby="emailHelp" placeholder="Enter Min Dollar">
+													  <input type="number" class="form-control" id="mintotaldollar" aria-describedby="emailHelp" placeholder="Min Total Pay">
 													</div>
 											</div>
-											<div class="col-sm-4">
+												<div class="col-sm-3">
+													<div class="form-group label-floating">
+													  <input type="number" class="form-control" id="mindollar" aria-describedby="emailHelp" placeholder="Dollar Per Mile">
+													</div>
+											</div>
+											<div class="col-sm-3">
 														<div class="form-group label-floating">
-														  <input type="number" class="form-control" id="maxdistance" aria-describedby="emailHelp" placeholder="Enter Max Distance">
+														  <input type="number" class="form-control" id="maxdistance" aria-describedby="emailHelp" placeholder="Max Distance">
 														</div>
 											</div>
-												<div class="col-sm-4">
+												<div class="col-sm-3">
 		                                            <div class="form-group label-floating">
 														<label class="control-label">Vehicle Condition</label>
 														<select id = "inop" class="form-control">
@@ -390,6 +395,7 @@
 	 var load_details = [
 		 {"pu": selected_pick },
 		 {"del":selected_del },
+		 {"minTotal" : $('#mintotaldollar').val()},
 		 {"minDollar":$('#mindollar').val() },
 		 {"maxDist":$('#maxdistance').val() },
 		 {"inop":$('#inop :selected').text() },

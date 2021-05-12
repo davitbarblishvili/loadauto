@@ -26,23 +26,22 @@ class acv(unittest.TestCase):
     def worker():
 
         data = request.get_json()
-        
-
         pick_up = data[0]['pu']
         deliv = data[1]['del']
-        dollar = str(data[2]['minDollar'])
-        dist = str(data[3]['maxDist'])
-        inop = str(data[4]['inop'])
+        minTotalDollar = str(data[2]['minTotal'])
+        dollar = str(data[3]['minDollar'])
+        dist = str(data[4]['maxDist'])
+        inop = str(data[5]['inop'])
 
         if len(deliv) == 1 and deliv[0] == '':
             for i in pick_up:
-                acv.one_way(i,dollar,dist,inop)
+                acv.one_way(i,dollar,minTotalDollar, dist,inop)
                 acv.close()
 
         if len(deliv) >= 1 and deliv[0]:
             for i in pick_up:
                 for j in deliv:
-                    acv.two_way(i,j, dollar, dist, inop)
+                    acv.two_way(i,j, dollar, minTotalDollar,  dist, inop)
                     acv.close()
        
         return 'OK'
@@ -110,7 +109,7 @@ class acv(unittest.TestCase):
         
     def refreshPage(self):
         time.sleep(1)
-        self.webdriver.find_element_by_xpath("//div[@class='arial14']/a[1]").click()
+        self.webdriver.find_element_by_xpath("(//input[@class='btnstyle'])[1]").click()
     
     def stage_load_all_loads(self,load):
         acv.addData(load)
@@ -135,7 +134,7 @@ class acv(unittest.TestCase):
         acv.close()
         return
     
-    def one_way(self,pick_up,dollar,dist, condition):
+    def one_way(self,pick_up,dollar,minDollar, dist, condition):
         acv.setUp()
         acv.login()
         time.sleep(1)
@@ -144,7 +143,7 @@ class acv(unittest.TestCase):
         self.webdriver.execute_script("arguments[0].click();", filter_tab)
         acv.iterateStatesOneWay(pick_up, dollar, dist, condition)
 
-    def two_way(self, pick_up, delivery, dollar, dist, condition):
+    def two_way(self, pick_up, delivery, dollar, minDollar,  dist, condition):
         acv.setUp()
         acv.login()
         time.sleep(2)
@@ -152,7 +151,7 @@ class acv(unittest.TestCase):
         self.webdriver.find_element_by_xpath("//select[@name='d_filter']/option[text()='"+ delivery + "']").click()
         filter_tab = self.webdriver.find_element_by_xpath("//input[@name='Filter']")
         self.webdriver.execute_script("arguments[0].click();", filter_tab)
-        acv.iterateStatesTwoWay(pick_up, delivery, dollar, dist, condition)
+        acv.iterateStatesTwoWay(pick_up, delivery, dollar, minDollar, dist, condition)
 
     def local_zips(self,s_zip, e_zip):
         acv.setUp()
@@ -160,19 +159,18 @@ class acv(unittest.TestCase):
         acv.iterateLocal(s_zip,e_zip)
 
     
-    def iterateStatesTwoWay(self,pick_up,delivery,dollar, dist, condition):
-        print(pick_up)
-        print(delivery)
-        print(dollar)
-        print(dist)
-        print(condition)
-        print("-----------------")
+    def iterateStatesTwoWay(self,pick_up,delivery,dollar,minDollar,  dist, condition):
         if dollar == '' or dollar == '---':
             dollar = 0.0
         else: 
             dollar = float(dollar)
-        
 
+        if minDollar == '' or minDollar == '---':
+            minDollar = 0.0
+        else: 
+            minDollar = float(minDollar)
+
+        
         if dist == '' or dist == '---':
             dist = float("inf")
         else:
@@ -184,7 +182,7 @@ class acv(unittest.TestCase):
             condition = 'INOP'
         
         if condition == 'Both' or condition == '':
-            acv.iterateStatesTwoHelper(pick_up, delivery, dollar, dist, condition)
+            acv.iterateStatesTwoWayHelper(pick_up, delivery, dollar, minDollar, dist, condition)
             return
 
         self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
@@ -201,7 +199,7 @@ class acv(unittest.TestCase):
                     continue
                 pay = info_array[13][1:]
                 if float(pay)/float(distance) >= dollar and float(distance) < dist:
-                    if info_array[3] == condition:
+                    if info_array[3] == condition and minDollar <= float(pay):  
                         self.webdriver.execute_script("arguments[0].click();", check_box[1])
                         select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
                         message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
@@ -209,16 +207,23 @@ class acv(unittest.TestCase):
                         acv.sendMessage(message)
                         acv.addData(info_array[0])
                         self.webdriver.execute_script("arguments[0].click();", select_button)
-                        acv.two_way(pick_up,delivery, dollar, dist, condition)
+                        acv.two_way(pick_up,delivery, dollar,minDollar,  dist, condition)
                         break
+        acv.refreshPage()
+        acv.iterateStatesTwoWay(pick_up,delivery, dollar, minDollar, dist, condition)
         
                        
 
-    def iterateStatesTwoWayHelper(self,pick_up,delivery, dollar, dist, condition):
+    def iterateStatesTwoWayHelper(self,pick_up,delivery, dollar, minDollar,  dist, condition):
         if dollar == '' or dollar == '---':
             dollar = 0.0
         else: 
             dollar = float(dollar)
+
+        if minDollar == '' or minDollar == '---':
+            minDollar = 0.0
+        else: 
+            minDollar = float(minDollar)
         
 
         if dist == '' or dist == '---':
@@ -246,24 +251,32 @@ class acv(unittest.TestCase):
                     continue
                 pay = info_array[13][1:]
                 if float(pay)/float(distance) >= dollar and float(distance) < dist:
-                    self.webdriver.execute_script("arguments[0].click();", check_box[1])
-                    select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
-                    message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
-                    message += "Delivery: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13]
-                    acv.sendMessage(message)
-                    acv.addData(info_array[0])
-                    self.webdriver.execute_script("arguments[0].click();", select_button)
-                    acv.two_way(pick_up,delivery, dollar, dist, condition)
-                    break
+                    if minDollar <= float(pay):
+                        self.webdriver.execute_script("arguments[0].click();", check_box[1])
+                        select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
+                        message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
+                        message += "Delivery: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13]
+                        acv.sendMessage(message)
+                        acv.addData(info_array[0])
+                        self.webdriver.execute_script("arguments[0].click();", select_button)
+                        acv.two_way(pick_up,delivery, dollar, minDollar, dist, condition)
+                        break
+        acv.refreshPage()
+        acv.iterateStatesTwoWayHelper(pick_up,delivery, dollar, minDollar,  dist, condition)
                                 
         
     
 
-    def iterateStatesOneWay(self,pick_up, dollar, dist, condition):
+    def iterateStatesOneWay(self,pick_up, dollar,minDollar,  dist, condition):
         if dollar == '' or dollar == '---':
             dollar = 0.0
         else: 
             dollar = float(dollar)
+
+        if minDollar == '' or minDollar == '---':
+            minDollar = 0.0
+        else: 
+            minDollar = float(minDollar)
         
 
         if dist == '' or dist == '---':
@@ -277,7 +290,7 @@ class acv(unittest.TestCase):
             condition = 'INOP'
 
         if condition == 'Both' or condition == '':
-            acv.iterateStatesOneWayHelper(pick_up, dollar, dist, condition)
+            acv.iterateStatesOneWayHelper(pick_up, dollar, minDollar,  dist, condition)
             return
         
         self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
@@ -294,7 +307,7 @@ class acv(unittest.TestCase):
                     continue
                 pay = info_array[13][1:]
                 if float(pay)/float(distance) >= dollar and float(distance) < dist: 
-                    if info_array[3] == condition:
+                    if info_array[3] == condition and minDollar <= float(pay):
                         self.webdriver.execute_script("arguments[0].click();", check_box[1])
                         select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
                         message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
@@ -302,16 +315,24 @@ class acv(unittest.TestCase):
                         acv.sendMessage(message)
                         acv.addData(info_array[0])
                         self.webdriver.execute_script("arguments[0].click();", select_button)
-                        acv.one_way(pick_up,dollar,dist,condition)
+                        acv.one_way(pick_up,dollar,minDollar, dist,condition)
                         break
+        acv.refreshPage()
+        acv.iterateStaesOneWay(pick_up, dollar, minDollar, dist, condition)
                                 
         
     
-    def iterateStatesOneWayHelper(self,pick_up, dollar, dist, condition):
+    def iterateStatesOneWayHelper(self,pick_up, dollar,minDollar,  dist, condition):
         if dollar == '' or dollar == '---':
             dollar = 0.0
         else: 
             dollar = float(dollar)
+        
+        if minDollar == '' or minDollar == '---':
+            minDollar = 0.0
+        else: 
+            minDollar = float(minDollar)
+
         
 
         if dist == '' or dist == '---':
@@ -334,15 +355,18 @@ class acv(unittest.TestCase):
                     continue
                 pay = info_array[13][1:]
                 if float(pay)/float(distance) >= dollar and float(distance) < dist: 
-                    self.webdriver.execute_script("arguments[0].click();", check_box[1])
-                    select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
-                    message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
-                    message += "Delivery: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13]
-                    acv.sendMessage(message)
-                    acv.addData(info_array[0])
-                    self.webdriver.execute_script("arguments[0].click();", select_button)
-                    acv.one_way(pick_up,dollar, dist, condition)
-                    break
+                    if minDollar <= float(pay):
+                        self.webdriver.execute_script("arguments[0].click();", check_box[1])
+                        select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
+                        message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
+                        message += "Delivery: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13]
+                        acv.sendMessage(message)
+                        acv.addData(info_array[0])
+                        self.webdriver.execute_script("arguments[0].click();", select_button)
+                        acv.one_way(pick_up,dollar,minDollar,  dist, condition)
+                        break
+        acv.refreshPage()
+        acv.iterateStaesOneWayHelper(pick_up, dollar, minDollar, dist, condition)
                                 
        
     def iterateLocal(self,s_zip,e_zip):
