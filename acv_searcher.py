@@ -87,7 +87,7 @@ class acv(unittest.TestCase):
         
     def setUp(self):
         option = webdriver.ChromeOptions()
-        #option.add_argument('headless')
+        option.add_argument('headless')
         self.webdriver = webdriver.Chrome(executable_path=r"/Users/davitbarblishvili/Desktop/acv/chromedriver",options=option)
         self.webdriver.get("https://transport.acvauctions.com/jobs/available.php")
     
