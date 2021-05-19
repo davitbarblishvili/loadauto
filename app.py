@@ -33,16 +33,11 @@ class acv(unittest.TestCase):
         dollar = str(data[3]['minDollar'])
         dist = str(data[4]['maxDist'])
         inop = str(data[5]['inop'])
-        condition = inop
-
-        print(inop)
     
 
         if len(deliv) == 1 and deliv[0] == '':
             for i in pick_up:
-                print(inop)
-
-                acv.one_way(i,dollar,minTotalDollar, dist,"Operable")
+                acv.one_way(i,dollar,minTotalDollar, dist,inop)
                 acv.close()
 
         if len(deliv) >= 1 and deliv[0]:
@@ -148,7 +143,7 @@ class acv(unittest.TestCase):
         self.webdriver.find_element_by_xpath("//select[@name='p_filter']/option[text()='"+ pick_up + "']").click()
         filter_tab = self.webdriver.find_element_by_xpath("//input[@name='Filter']")
         self.webdriver.execute_script("arguments[0].click();", filter_tab)
-        acv.iterateStatesOneWay(pick_up, dollar, dist, condition)
+        acv.iterateStatesOneWay(pick_up, dollar, minDollar, dist, condition)
 
     def two_way(self, pick_up, delivery, dollar, minDollar,  dist, condition):
         acv.setUp()
