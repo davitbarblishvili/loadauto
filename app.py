@@ -39,6 +39,8 @@ class acv(unittest.TestCase):
 
         if len(deliv) == 1 and deliv[0] == '':
             for i in pick_up:
+                print(inop)
+
                 acv.one_way(i,dollar,minTotalDollar, dist,inop)
                 acv.close()
 
@@ -400,9 +402,10 @@ class acv(unittest.TestCase):
        
         
 if __name__ == "__main__":
+    app.run()
     acv = acv()
     acv.initDatabase()
-    app.run()
+ 
     
    
    
