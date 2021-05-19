@@ -1,1 +1,1 @@
-web: gunicorn acv_searcher:app
+web: gunicorn app:app
