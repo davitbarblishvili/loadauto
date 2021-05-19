@@ -54,17 +54,10 @@ class acv(unittest.TestCase):
 
         
     def setUp(self):
-
-        GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
-        CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
-
-        option = webdriver.ChromeOptions()
-        option.add_argument('--disable-gpu')
-        option.add_argument('--no-sandbox')
-      #  option.add_argument('headless')
-        option.binary_location = GOOGLE_CHROME_PATH
         
-        self.webdriver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH,options=option)
+        option = webdriver.ChromeOptions()
+        option.add_argument('headless')
+        self.webdriver = webdriver.Chrome(executable_path=r"./chromedriver",options=option)
         self.webdriver.get("https://transport.acvauctions.com/jobs/available.php")
     
     def close(self):
