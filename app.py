@@ -13,10 +13,9 @@ import sys
 from flask import Flask, render_template, request, redirect, Response
 import random, json
 
-app = Flask(__name__)
-class acv(unittest.TestCase):
 
-    
+class acv(unittest.TestCase):
+    app = Flask(__name__)
     
     @app.route('/')
     def output():
@@ -398,8 +397,8 @@ class acv(unittest.TestCase):
        
         
 if __name__ == "__main__":
-    app.run()
     acv = acv()
+    acv.app.run()
     acv.initDatabase()
  
     
