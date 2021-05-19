@@ -33,6 +33,7 @@ class acv(unittest.TestCase):
         dollar = str(data[3]['minDollar'])
         dist = str(data[4]['maxDist'])
         inop = str(data[5]['inop'])
+        condition = inop
 
         print(inop)
     
@@ -41,7 +42,7 @@ class acv(unittest.TestCase):
             for i in pick_up:
                 print(inop)
 
-                acv.one_way(i,dollar,minTotalDollar, dist,inop)
+                acv.one_way(i,dollar,minTotalDollar, dist,condition)
                 acv.close()
 
         if len(deliv) >= 1 and deliv[0]:
