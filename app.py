@@ -399,7 +399,7 @@ class acv(unittest.TestCase):
 if __name__ == "__main__":
     acv = acv()
     app = acv.app
-    acv.app.run()
+    app.run()
     acv.initDatabase()
  
     
