@@ -34,6 +34,9 @@ class acv(unittest.TestCase):
         dist = str(data[4]['maxDist'])
         inop = str(data[5]['inop'])
 
+        print(inop)
+    
+
         if len(deliv) == 1 and deliv[0] == '':
             for i in pick_up:
                 acv.one_way(i,dollar,minTotalDollar, dist,inop)
