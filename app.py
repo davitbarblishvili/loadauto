@@ -42,7 +42,7 @@ class acv(unittest.TestCase):
             for i in pick_up:
                 print(inop)
 
-                acv.one_way(i,dollar,minTotalDollar, dist,condition)
+                acv.one_way(i,dollar,minTotalDollar, dist,"Operable")
                 acv.close()
 
         if len(deliv) >= 1 and deliv[0]:
