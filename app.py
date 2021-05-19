@@ -13,41 +13,8 @@ import sys
 from flask import Flask, render_template, request, redirect, Response
 import random, json
 
-app = Flask(__name__)
 class acv(unittest.TestCase):
-    app = Flask(__name__)
-    
-    @app.route('/')
-    def output():
-	# serve index template
-	    return render_template('acvlanding.html')
-
-    @app.route('/receiver', methods = ['POST'])
-    def worker():
-
-        data = request.get_json()
-        pick_up = data[0]['pu']
-        deliv = data[1]['del']
-        minTotalDollar = str(data[2]['minTotal'])
-        dollar = str(data[3]['minDollar'])
-        dist = str(data[4]['maxDist'])
-        inop = str(data[5]['inop'])
-    
-
-        if len(deliv) == 1 and deliv[0] == '':
-            for i in pick_up:
-                acv.one_way(i,dollar,minTotalDollar, dist,inop)
-                acv.close()
-
-        if len(deliv) >= 1 and deliv[0]:
-            for i in pick_up:
-                for j in deliv:
-                    acv.two_way(i,j, dollar, minTotalDollar,  dist, inop)
-                    acv.close()
-       
-        return 'OK'
-
-
+   
     def sendMessage(self,textMessage):
         account_sid = 'ACfdaf54ef106ea4f48fae9e78588cd69e'
         auth_token = 'fb15a4c98079021641376ca358215f79'
@@ -395,12 +362,45 @@ class acv(unittest.TestCase):
                         break
                                 
        
+app = Flask(__name__)
+
+acv = acv()
+acv.initDatabase()
+
+@app.route('/')
+def output():
+# serve index template
+	return render_template('acvlanding.html')
+
+@app.route('/receiver', methods = ['POST'])
+def worker():
+
+    data = request.get_json()
+    pick_up = data[0]['pu']
+    deliv = data[1]['del']
+    minTotalDollar = str(data[2]['minTotal'])
+    dollar = str(data[3]['minDollar'])
+    dist = str(data[4]['maxDist'])
+    inop = str(data[5]['inop'])
+    
+
+    if len(deliv) == 1 and deliv[0] == '':
+        for i in pick_up:
+            acv.one_way(i,dollar,minTotalDollar, dist,inop)
+            acv.close()
+
+    if len(deliv) >= 1 and deliv[0]:
+        for i in pick_up:
+            for j in deliv:
+                acv.two_way(i,j, dollar, minTotalDollar,  dist, inop)
+                acv.close()
+       
+    return 'OK'
         
 if __name__ == "__main__":
-    acv = acv()
-    app = acv.app
     app.run()
-    acv.initDatabase()
+    
+    
  
     
    
