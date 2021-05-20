@@ -269,7 +269,6 @@ class acv(unittest.TestCase):
         self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
         table = self.webdriver.find_element_by_xpath("//table[2]")
         for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
-            print("came here")
             info_array = [] 
             check_box = row.find_elements_by_xpath(".//input[@type='checkbox']")
             for td in row.find_elements_by_xpath(".//td[@class='arial14']"):      
@@ -290,7 +289,7 @@ class acv(unittest.TestCase):
                         acv.addData(info_array[0])
                         self.webdriver.execute_script("arguments[0].click();", select_button)
                         acv.one_way(pick_up,dollar,minDollar, dist,condition)
-                        break
+                        return 'ok'
         acv.refreshPage()
         acv.iterateStaesOneWay(pick_up, dollar, minDollar, dist, condition)
                                 
@@ -392,7 +391,6 @@ def worker():
 
     if len(deliv) == 1 and deliv[0] == '':
         for i in pick_up:
-            yield "OK"
             acv.one_way(i,dollar,minTotalDollar, dist,inop)
             acv.close()
 
