@@ -55,8 +55,8 @@ class acv(unittest.TestCase):
         
     def setUp(self):
         option = webdriver.ChromeOptions()
-        
-        GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
+
+        GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google-chrome'
         CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
         option.add_argument('headless')
         option.add_argument('--disable-gpu')
