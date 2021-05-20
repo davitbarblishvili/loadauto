@@ -392,6 +392,7 @@ def worker():
 
     if len(deliv) == 1 and deliv[0] == '':
         for i in pick_up:
+            yield "OK"
             acv.one_way(i,dollar,minTotalDollar, dist,inop)
             acv.close()
 
