@@ -69,8 +69,7 @@ class acv(unittest.TestCase):
         self.webdriver.close()
 
     def login(self):
-               
-      #  time.sleep(2)
+        time.sleep(2)
         username = self.webdriver.find_element_by_xpath("//input[@name='email']")
         self.webdriver.execute_script("arguments[0].click();", username)
         username.send_keys("righttimenyc@yahoo.com")
