@@ -13,6 +13,7 @@ import sys
 from flask import Flask, render_template, request, redirect, Response
 import random, json
 
+
 class acv(unittest.TestCase):
    
     def sendMessage(self,textMessage):
@@ -268,6 +269,7 @@ class acv(unittest.TestCase):
         self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
         table = self.webdriver.find_element_by_xpath("//table[2]")
         for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
+            print("came here")
             info_array = [] 
             check_box = row.find_elements_by_xpath(".//input[@type='checkbox']")
             for td in row.find_elements_by_xpath(".//td[@class='arial14']"):      
@@ -400,6 +402,8 @@ def worker():
                 acv.close()
        
     return 'OK'
+
+
         
 if __name__ == "__main__":
     app.run()
