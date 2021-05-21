@@ -377,7 +377,7 @@ def output():
 # serve index template
 	return render_template('acvlanding.html')
 
-@app.route('/receiver', methods = ['POST'])
+@app.route('/receiver', methods = ['POST','GET'])
 def worker():
 
     data = request.get_json()
@@ -388,10 +388,12 @@ def worker():
     dist = str(data[4]['maxDist'])
     inop = str(data[5]['inop'])
 
+    response = 'ok'
+
 
     if len(deliv) == 1 and deliv[0] == '':
         for i in pick_up:
-            acv.one_way(i,dollar,minTotalDollar, dist,inop)
+            return jsonify(response),acv.one_way(i,dollar,minTotalDollar, dist,inop)
 
     if len(deliv) >= 1 and deliv[0]:
         for i in pick_up:
