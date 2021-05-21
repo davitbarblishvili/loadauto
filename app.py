@@ -6,12 +6,8 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 import time
 import unittest
-import json
-import os
 from twilio.rest import Client
-import sys
-from flask import Flask, render_template, request, redirect, Response, jsonify
-import random, json
+from flask import Flask, render_template, request
 
 
 class acv(unittest.TestCase):
@@ -30,13 +26,11 @@ class acv(unittest.TestCase):
             to= number
             ) 
 
-
     def initDatabase(self):
 
         cred = credentials.Certificate("./acvdatabase-firebase-adminsdk-er7dp-d4bdc9c2cf.json")
         firebase_admin.initialize_app(cred)
-        
-
+    
     def addData(self, load):
         data = {
             u'staged': True
@@ -53,7 +47,6 @@ class acv(unittest.TestCase):
         else:
             return False
 
-        
     def setUp(self):
         option = webdriver.ChromeOptions()
 
@@ -80,29 +73,24 @@ class acv(unittest.TestCase):
         password.send_keys("Tsikara95#")
         password.send_keys(Keys.ENTER)
 
-        
     def refreshPage(self):
-        time.sleep(1)
         self.webdriver.find_element_by_xpath("(//input[@class='btnstyle'])[1]").click()
 
     def mainPage(self):
         self.webdriver.find_element_by_xpath("(//a[@href='available.php'])[1]").click()
     
     
-                
-
     def one_way(self,pick_up,dollar,minDollar, dist, condition):
         time.sleep(1)
         acv.mainPage()
         self.webdriver.find_element_by_xpath("//select[@name='p_filter']/option[text()='"+ pick_up + "']").click()
         filter_tab = self.webdriver.find_element_by_xpath("//input[@name='Filter']")
         self.webdriver.execute_script("arguments[0].click();", filter_tab)
-        acv.iterateStatesOneWay(pick_up, dollar, minDollar, dist, condition)
+        return acv.iterateStatesOneWay(pick_up, dollar, minDollar, dist, condition)
 
     def two_way(self, pick_up, delivery, dollar, minDollar,  dist, condition):
-        acv.setUp()
-        acv.login()
-        time.sleep(2)
+        time.sleep(1)
+        acv.mainPage()
         self.webdriver.find_element_by_xpath("//select[@name='p_filter']/option[text()='"+ pick_up + "']").click()
         self.webdriver.find_element_by_xpath("//select[@name='d_filter']/option[text()='"+ delivery + "']").click()
         filter_tab = self.webdriver.find_element_by_xpath("//input[@name='Filter']")
@@ -215,10 +203,10 @@ class acv(unittest.TestCase):
                         acv.sendMessage(message)
                         acv.addData(info_array[0])
                         self.webdriver.execute_script("arguments[0].click();", select_button)
-                        acv.two_way(pick_up,delivery, dollar, minDollar, dist, condition)
-                        break
+                        return acv.two_way(pick_up,delivery, dollar, minDollar, dist, condition)
+                        
         acv.refreshPage()
-        acv.iterateStatesTwoWayHelper(pick_up,delivery, dollar, minDollar,  dist, condition)
+        return acv.iterateStatesTwoWayHelper(pick_up,delivery, dollar, minDollar,  dist, condition)
                                 
         
     
@@ -320,10 +308,9 @@ class acv(unittest.TestCase):
                         acv.sendMessage(message)
                         acv.addData(info_array[0])
                         self.webdriver.execute_script("arguments[0].click();", select_button)
-                        acv.one_way(pick_up,dollar,minDollar,  dist, condition)
-                        break
+                        return acv.one_way(pick_up,dollar,minDollar,  dist, condition)
         acv.refreshPage()
-        acv.iterateStaesOneWayHelper(pick_up, dollar, minDollar, dist, condition)
+        return acv.iterateStaesOneWayHelper(pick_up, dollar, minDollar, dist, condition)
                                 
        
     def iterateLocal(self,s_zip,e_zip):
@@ -352,9 +339,10 @@ class acv(unittest.TestCase):
                                 
        
 app = Flask(__name__)
-
 acv = acv()
 acv.initDatabase()
+acv.setUp()
+acv.login()
 
 @app.route('/')
 def output():
@@ -372,9 +360,6 @@ def worker():
     dist = str(data[4]['maxDist'])
     inop = str(data[5]['inop'])
 
-    acv.setUp()
-    acv.login()
-
     if len(deliv) == 1 and deliv[0] == '':
         for i in pick_up:
             acv.one_way(i,dollar,minTotalDollar, dist,inop)
@@ -384,8 +369,6 @@ def worker():
             for j in deliv:
                 acv.two_way(i,j, dollar, minTotalDollar,  dist, inop)
 
-       
-     
 if __name__ == "__main__":
     app.run(threaded=True)
     
