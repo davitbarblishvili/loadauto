@@ -209,9 +209,8 @@ class acv(unittest.TestCase):
         return acv.iterateStatesTwoWayHelper(pick_up,delivery, dollar, minDollar,  dist, condition)
                                 
         
-    
-
     def iterateStatesOneWay(self,pick_up, dollar,minDollar,  dist, condition):
+        start_time = time.time()
         if dollar == '' or dollar == '---':
             dollar = 0.0
         else: 
@@ -237,6 +236,7 @@ class acv(unittest.TestCase):
             acv.iterateStatesOneWayHelper(pick_up, dollar, minDollar,  dist, condition)
             return
         
+        print("--- %s seconds ---" % (time.time() - start_time))
         self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
         table = self.webdriver.find_element_by_xpath("//table[2]")
         for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
