@@ -182,7 +182,7 @@ class acv(unittest.TestCase):
                         acv.addData(info_array[0])
                         self.webdriver.execute_script("arguments[0].click();", select_button)
                         acv.two_way(pick_up,delivery, dollar,minDollar,  dist, condition)
-                        break
+                        return
         acv.refreshPage()
         acv.iterateStatesTwoWay(pick_up,delivery, dollar, minDollar, dist, condition)
         
