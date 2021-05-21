@@ -27,7 +27,6 @@ class acv(unittest.TestCase):
             ) 
 
     def initDatabase(self):
-
         cred = credentials.Certificate("./acvdatabase-firebase-adminsdk-er7dp-d4bdc9c2cf.json")
         firebase_admin.initialize_app(cred)
     
@@ -49,7 +48,6 @@ class acv(unittest.TestCase):
 
     def setUp(self):
         option = webdriver.ChromeOptions()
-
         GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google-chrome'
         CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
         option.add_argument('--no-sandbox')
@@ -104,6 +102,9 @@ class acv(unittest.TestCase):
 
     
     def iterateStatesTwoWay(self,pick_up,delivery,dollar,minDollar,  dist, condition):
+        if condition == 'Both' or condition == '':
+            return acv.iterateStatesTwoWayHelper(pick_up, delivery, dollar, minDollar, dist, condition)
+
         if dollar == '' or dollar == '---':
             dollar = 0.0
         else: 
@@ -124,11 +125,7 @@ class acv(unittest.TestCase):
             condition = 'Good'
         if condition == 'Inoperable':
             condition = 'INOP'
-        
-        if condition == 'Both' or condition == '':
-            acv.iterateStatesTwoWayHelper(pick_up, delivery, dollar, minDollar, dist, condition)
-            return
-
+                    
         self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
         table = self.webdriver.find_element_by_xpath("//table[2]")
         for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
@@ -210,7 +207,9 @@ class acv(unittest.TestCase):
                                 
         
     def iterateStatesOneWay(self,pick_up, dollar,minDollar,  dist, condition):
-        start_time = time.time()
+        if condition == 'Both' or condition == '':
+            return acv.iterateStatesOneWayHelper(pick_up, dollar, minDollar,  dist, condition)
+       
         if dollar == '' or dollar == '---':
             dollar = 0.0
         else: 
@@ -232,11 +231,7 @@ class acv(unittest.TestCase):
         if condition == 'Inoperable':
             condition = 'INOP'
 
-        if condition == 'Both' or condition == '':
-            acv.iterateStatesOneWayHelper(pick_up, dollar, minDollar,  dist, condition)
-            return
         
-        print("--- %s seconds ---" % (time.time() - start_time))
         self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
         table = self.webdriver.find_element_by_xpath("//table[2]")
         for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
@@ -259,7 +254,6 @@ class acv(unittest.TestCase):
                         acv.sendMessage(message)
                         acv.addData(info_array[0])
                         self.webdriver.execute_script("arguments[0].click();", select_button)
-                        print("came here")
                         return acv.one_way(pick_up,dollar,minDollar, dist,condition)
                         
         acv.refreshPage()
@@ -277,8 +271,6 @@ class acv(unittest.TestCase):
             minDollar = 0.0
         else: 
             minDollar = float(minDollar)
-
-        
 
         if dist == '' or dist == '---':
             dist = float("inf")
@@ -311,36 +303,11 @@ class acv(unittest.TestCase):
                         return acv.one_way(pick_up,dollar,minDollar,  dist, condition)
         acv.refreshPage()
         return acv.iterateStaesOneWayHelper(pick_up, dollar, minDollar, dist, condition)
-                                
-       
-    def iterateLocal(self,s_zip,e_zip):
-        self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
-        table = self.webdriver.find_element_by_xpath("//table[2]")
-        for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
-            info_array = [] 
-            check_box = row.find_elements_by_xpath(".//input[@type='checkbox']")
-            for td in row.find_elements_by_xpath(".//td[@class='arial14']"):      
-                if td.text:
-                    info_array.append(td.text)
-            if acv.checkData(info_array[0]) == False:
-                distance = info_array[12]
-                pay = info_array[13][1:]
-                if float(pay)/float(distance) >= 2.00:
-                    if s_zip <= int(info_array[7]) <= e_zip and info_array[3] == "Good":
-                        self.webdriver.execute_script("arguments[0].click();", check_box[1])
-                        select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
-                        message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
-                        message += "Delivery: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13]
-                        acv.sendMessage(message)
-                        acv.addData(info_array[0])
-                        self.webdriver.execute_script("arguments[0].click();", select_button)
-                        acv.local_zips(s_zip,e_zip)
-                        break
-                                
+                                                            
        
 app = Flask(__name__)
 acv = acv()
-acv.initDatabase()
+#acv.initDatabase()
 acv.setUp()
 acv.login()
 
