@@ -93,7 +93,6 @@ class acv(unittest.TestCase):
         acv.iterateStatesTwoWay(pick_up, delivery, dollar, minDollar, dist, condition)
 
    
-    
     def iterateStatesTwoWay(self,pick_up,delivery,dollar,minDollar,  dist, condition):
         if condition == 'Both' or condition == '':
             return acv.iterateStatesTwoWayHelper(pick_up, delivery, dollar, minDollar, dist, condition)
@@ -115,11 +114,11 @@ class acv(unittest.TestCase):
                     if info_array[3] == condition and minDollar <= float(pay):  
                         self.webdriver.execute_script("arguments[0].click();", check_box[1])
                         select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
+                        self.webdriver.execute_script("arguments[0].click();", select_button)
                         message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
                         message += "Delivery: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13]
                         acv.sendMessage(message)
                         acv.addData(info_array[0])
-                        self.webdriver.execute_script("arguments[0].click();", select_button)
                         return acv.two_way(pick_up,delivery, dollar,minDollar,  dist, condition)
                         
         acv.refreshPage()
@@ -145,11 +144,11 @@ class acv(unittest.TestCase):
                     if minDollar <= float(pay):
                         self.webdriver.execute_script("arguments[0].click();", check_box[1])
                         select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
+                        self.webdriver.execute_script("arguments[0].click();", select_button)
                         message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
                         message += "Delivery: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13]
                         acv.sendMessage(message)
                         acv.addData(info_array[0])
-                        self.webdriver.execute_script("arguments[0].click();", select_button)
                         return acv.two_way(pick_up,delivery, dollar, minDollar, dist, condition)
                         
         acv.refreshPage()
@@ -177,18 +176,16 @@ class acv(unittest.TestCase):
                     if info_array[3] == condition and minDollar <= float(pay):
                         self.webdriver.execute_script("arguments[0].click();", check_box[1])
                         select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
+                        self.webdriver.execute_script("arguments[0].click();", select_button)
                         message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
                         message += "Delivery: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13]
                         acv.sendMessage(message)
                         acv.addData(info_array[0])
-                        self.webdriver.execute_script("arguments[0].click();", select_button)
                         return acv.one_way(pick_up,dollar,minDollar, dist,condition)
                         
         acv.refreshPage()
         return acv.iterateStaesOneWay(pick_up, dollar, minDollar, dist, condition)
-                                
-        
-    
+                            
     def iterateStatesOneWayHelper(self,pick_up, dollar,minDollar,  dist, condition):
         self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
         table = self.webdriver.find_element_by_xpath("//table[2]")
@@ -207,9 +204,9 @@ class acv(unittest.TestCase):
                     if minDollar <= float(pay):
                         self.webdriver.execute_script("arguments[0].click();", check_box[1])
                         select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
-                        message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
-                        message += "Delivery: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13]
                         self.webdriver.execute_script("arguments[0].click();", select_button)
+                        message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
+                        message += "Delivery: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13] 
                         acv.sendMessage(message)
                         acv.addData(info_array[0])
                         return acv.one_way(pick_up,dollar,minDollar,  dist, condition)
@@ -256,6 +253,8 @@ def worker():
         for i in pick_up:
             for j in deliv:
                 acv.two_way(i,j, dollar, minTotalDollar,  dist, condition)
+
+
 
 if __name__ == "__main__":
     app.run(threaded=True)
