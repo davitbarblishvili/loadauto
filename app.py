@@ -41,11 +41,8 @@ class acv(unittest.TestCase):
         db = firestore.client()
         doc_ref = db.collection('loadIds').document(load)
         doc = doc_ref.get()
-        if doc.exists:
-            return True
-        else:
-            return False
-
+        return True if doc.exists else False
+      
     def setUp(self):
         option = webdriver.ChromeOptions()
         GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google-chrome'
@@ -95,37 +92,12 @@ class acv(unittest.TestCase):
         self.webdriver.execute_script("arguments[0].click();", filter_tab)
         acv.iterateStatesTwoWay(pick_up, delivery, dollar, minDollar, dist, condition)
 
-    def local_zips(self,s_zip, e_zip):
-        acv.setUp()
-        acv.login()
-        acv.iterateLocal(s_zip,e_zip)
-
+   
     
     def iterateStatesTwoWay(self,pick_up,delivery,dollar,minDollar,  dist, condition):
         if condition == 'Both' or condition == '':
             return acv.iterateStatesTwoWayHelper(pick_up, delivery, dollar, minDollar, dist, condition)
 
-        if dollar == '' or dollar == '---':
-            dollar = 0.0
-        else: 
-            dollar = float(dollar)
-
-        if minDollar == '' or minDollar == '---':
-            minDollar = 0.0
-        else: 
-            minDollar = float(minDollar)
-
-        
-        if dist == '' or dist == '---':
-            dist = float("inf")
-        else:
-            dist = float(dist)
-
-        if condition == 'Operable':
-            condition = 'Good'
-        if condition == 'Inoperable':
-            condition = 'INOP'
-                    
         self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
         table = self.webdriver.find_element_by_xpath("//table[2]")
         for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
@@ -156,28 +128,6 @@ class acv(unittest.TestCase):
                        
 
     def iterateStatesTwoWayHelper(self,pick_up,delivery, dollar, minDollar,  dist, condition):
-        if dollar == '' or dollar == '---':
-            dollar = 0.0
-        else: 
-            dollar = float(dollar)
-
-        if minDollar == '' or minDollar == '---':
-            minDollar = 0.0
-        else: 
-            minDollar = float(minDollar)
-        
-
-        if dist == '' or dist == '---':
-            dist = float("inf")
-        else:
-            dist = float(dist)
-
-        if condition == 'Operable':
-            condition = 'Good'
-        if condition == 'Inoperable':
-            condition = 'INOP'
-        
-
         self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
         table = self.webdriver.find_element_by_xpath("//table[2]")
         for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
@@ -209,29 +159,7 @@ class acv(unittest.TestCase):
     def iterateStatesOneWay(self,pick_up, dollar,minDollar,  dist, condition):
         if condition == 'Both' or condition == '':
             return acv.iterateStatesOneWayHelper(pick_up, dollar, minDollar,  dist, condition)
-       
-        if dollar == '' or dollar == '---':
-            dollar = 0.0
-        else: 
-            dollar = float(dollar)
-
-        if minDollar == '' or minDollar == '---':
-            minDollar = 0.0
-        else: 
-            minDollar = float(minDollar)
-        
-
-        if dist == '' or dist == '---':
-            dist = float("inf")
-        else:
-            dist = float(dist)
-
-        if condition == 'Operable':
-            condition = 'Good'
-        if condition == 'Inoperable':
-            condition = 'INOP'
-
-        
+               
         self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
         table = self.webdriver.find_element_by_xpath("//table[2]")
         for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
@@ -262,22 +190,6 @@ class acv(unittest.TestCase):
         
     
     def iterateStatesOneWayHelper(self,pick_up, dollar,minDollar,  dist, condition):
-        if dollar == '' or dollar == '---':
-            dollar = 0.0
-        else: 
-            dollar = float(dollar)
-        
-        if minDollar == '' or minDollar == '---':
-            minDollar = 0.0
-        else: 
-            minDollar = float(minDollar)
-
-        if dist == '' or dist == '---':
-            dist = float("inf")
-        else:
-            dist = float(dist)
-
-    
         self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
         table = self.webdriver.find_element_by_xpath("//table[2]")
         for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
@@ -297,9 +209,9 @@ class acv(unittest.TestCase):
                         select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
                         message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
                         message += "Delivery: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13]
+                        self.webdriver.execute_script("arguments[0].click();", select_button)
                         acv.sendMessage(message)
                         acv.addData(info_array[0])
-                        self.webdriver.execute_script("arguments[0].click();", select_button)
                         return acv.one_way(pick_up,dollar,minDollar,  dist, condition)
         acv.refreshPage()
         return acv.iterateStaesOneWayHelper(pick_up, dollar, minDollar, dist, condition)
@@ -307,7 +219,7 @@ class acv(unittest.TestCase):
        
 app = Flask(__name__)
 acv = acv()
-#acv.initDatabase()
+acv.initDatabase()
 acv.setUp()
 acv.login()
 
@@ -325,16 +237,25 @@ def worker():
     minTotalDollar = str(data[2]['minTotal'])
     dollar = str(data[3]['minDollar'])
     dist = str(data[4]['maxDist'])
-    inop = str(data[5]['inop'])
+    condition = str(data[5]['inop'])
+
+    dollar = 0.0 if dollar == '' or dollar == '---' else float(dollar)
+    minTotalDollar = 0.0 if minTotalDollar == '' or minTotalDollar == '---' else float(minTotalDollar)
+    dist = float("inf") if dist == '' or dist == '---' else float(dist)
+        
+    if condition == 'Operable':
+        condition = 'Good'
+    if condition == 'Inoperable':
+        condition = 'INOP'
 
     if len(deliv) == 1 and deliv[0] == '':
         for i in pick_up:
-            acv.one_way(i,dollar,minTotalDollar, dist,inop)
+            acv.one_way(i,dollar,minTotalDollar, dist,condition)
 
     if len(deliv) >= 1 and deliv[0]:
         for i in pick_up:
             for j in deliv:
-                acv.two_way(i,j, dollar, minTotalDollar,  dist, inop)
+                acv.two_way(i,j, dollar, minTotalDollar,  dist, condition)
 
 if __name__ == "__main__":
     app.run(threaded=True)
