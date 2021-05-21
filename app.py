@@ -10,7 +10,7 @@ import json
 import os
 from twilio.rest import Client
 import sys
-from flask import Flask, render_template, request, redirect, Response
+from flask import Flask, render_template, request, redirect, Response, jsonify
 import random, json
 
 
@@ -388,8 +388,8 @@ def worker():
     dist = str(data[4]['maxDist'])
     inop = str(data[5]['inop'])
 
-    
-    
+    response = 'accepted'
+    return jsonify(response)
 
     if len(deliv) == 1 and deliv[0] == '':
         for i in pick_up:
@@ -402,7 +402,7 @@ def worker():
                 acv.two_way(i,j, dollar, minTotalDollar,  dist, inop)
                 acv.close()
        
-    return 'OK'
+    
 
 
         
