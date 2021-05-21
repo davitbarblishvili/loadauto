@@ -289,9 +289,9 @@ class acv(unittest.TestCase):
                         acv.addData(info_array[0])
                         self.webdriver.execute_script("arguments[0].click();", select_button)
                         acv.one_way(pick_up,dollar,minDollar, dist,condition)
-                        return {"message": "Accepted"}, 202
+                        
         acv.refreshPage()
-        acv.iterateStaesOneWay(pick_up, dollar, minDollar, dist, condition)
+        return "OK", acv.iterateStaesOneWay(pick_up, dollar, minDollar, dist, condition)
                                 
         
     
@@ -388,26 +388,20 @@ def worker():
     dist = str(data[4]['maxDist'])
     inop = str(data[5]['inop'])
 
-    response = 'accepted'
-    return jsonify(response)
 
     if len(deliv) == 1 and deliv[0] == '':
         for i in pick_up:
             acv.one_way(i,dollar,minTotalDollar, dist,inop)
-            acv.close()
 
     if len(deliv) >= 1 and deliv[0]:
         for i in pick_up:
             for j in deliv:
                 acv.two_way(i,j, dollar, minTotalDollar,  dist, inop)
-                acv.close()
+
        
-    
-
-
-        
+     
 if __name__ == "__main__":
-    app.run()
+    app.run(threaded=True)
     
     
  
