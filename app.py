@@ -84,34 +84,16 @@ class acv(unittest.TestCase):
     def refreshPage(self):
         time.sleep(1)
         self.webdriver.find_element_by_xpath("(//input[@class='btnstyle'])[1]").click()
+
+    def mainPage(self):
+        self.webdriver.find_element_by_xpath("(//a[@href='available.php'])[1]").click()
     
-    def stage_load_all_loads(self,load):
-        acv.addData(load)
-        acv.setUp()
-        acv.login()
-        time.sleep(1)
-        search_tab = self.webdriver.find_element_by_xpath("//input[@name='search_txt']")
-        self.webdriver.execute_script("arguments[0].click();", search_tab)
-        search_tab.send_keys(load)
-
-        filter_tab = self.webdriver.find_element_by_xpath("//input[@name='Filter']")
-        self.webdriver.execute_script("arguments[0].click();", filter_tab)
-
-        time.sleep(1)
-        check_button = self.webdriver.find_element_by_xpath("(//input[@type= 'checkbox'])[2]")
-        self.webdriver.execute_script("arguments[0].click();", check_button)
-
-        if self.webdriver.find_element_by_xpath("(//input[@type= 'checkbox'])[2]").is_selected():
-            select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
-            self.webdriver.execute_script("arguments[0].click();", select_button)
-        
-        acv.close()
-        return
     
+                
+
     def one_way(self,pick_up,dollar,minDollar, dist, condition):
-        acv.setUp()
-        acv.login()
         time.sleep(1)
+        acv.mainPage()
         self.webdriver.find_element_by_xpath("//select[@name='p_filter']/option[text()='"+ pick_up + "']").click()
         filter_tab = self.webdriver.find_element_by_xpath("//input[@name='Filter']")
         self.webdriver.execute_script("arguments[0].click();", filter_tab)
@@ -181,7 +163,6 @@ class acv(unittest.TestCase):
                         acv.sendMessage(message)
                         acv.addData(info_array[0])
                         self.webdriver.execute_script("arguments[0].click();", select_button)
-                        print("came here")
                         return acv.two_way(pick_up,delivery, dollar,minDollar,  dist, condition)
                         
         acv.refreshPage()
@@ -290,10 +271,11 @@ class acv(unittest.TestCase):
                         acv.sendMessage(message)
                         acv.addData(info_array[0])
                         self.webdriver.execute_script("arguments[0].click();", select_button)
-                        acv.one_way(pick_up,dollar,minDollar, dist,condition)
+                        print("came here")
+                        return acv.one_way(pick_up,dollar,minDollar, dist,condition)
                         
         acv.refreshPage()
-        acv.iterateStaesOneWay(pick_up, dollar, minDollar, dist, condition)
+        return acv.iterateStaesOneWay(pick_up, dollar, minDollar, dist, condition)
                                 
         
     
@@ -390,6 +372,8 @@ def worker():
     dist = str(data[4]['maxDist'])
     inop = str(data[5]['inop'])
 
+    acv.setUp()
+    acv.login()
 
     if len(deliv) == 1 and deliv[0] == '':
         for i in pick_up:
