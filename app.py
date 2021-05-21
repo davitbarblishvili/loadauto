@@ -59,9 +59,10 @@ class acv(unittest.TestCase):
 
         GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google-chrome'
         CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
+        option.add_argument('--no-sandbox')
         option.add_argument('headless')
         option.add_argument('--disable-gpu')
-        option.add_argument('--no-sandbox')
+        option.add_argument('--disable-dev-shm-usage')
         option.binary_location = GOOGLE_CHROME_PATH
         self.webdriver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH,options=option)
         self.webdriver.get("https://transport.acvauctions.com/jobs/available.php")
@@ -291,7 +292,7 @@ class acv(unittest.TestCase):
                         acv.one_way(pick_up,dollar,minDollar, dist,condition)
                         
         acv.refreshPage()
-        return "OK", acv.iterateStaesOneWay(pick_up, dollar, minDollar, dist, condition)
+        acv.iterateStaesOneWay(pick_up, dollar, minDollar, dist, condition)
                                 
         
     
@@ -388,12 +389,10 @@ def worker():
     dist = str(data[4]['maxDist'])
     inop = str(data[5]['inop'])
 
-    response = 'ok'
-
 
     if len(deliv) == 1 and deliv[0] == '':
         for i in pick_up:
-            return jsonify(response),acv.one_way(i,dollar,minTotalDollar, dist,inop)
+            acv.one_way(i,dollar,minTotalDollar, dist,inop)
 
     if len(deliv) >= 1 and deliv[0]:
         for i in pick_up:
