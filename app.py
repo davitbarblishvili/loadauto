@@ -8,6 +8,9 @@ import time
 import unittest
 from twilio.rest import Client
 from flask import Flask, render_template, request
+from rq import Queue
+from worker import conn
+from utils import count_words_at_url
 
 
 class acv(unittest.TestCase):
@@ -219,6 +222,9 @@ acv = acv()
 acv.initDatabase()
 acv.setUp()
 acv.login()
+
+q = Queue(connection=conn)
+result = q.enqueue(count_words_at_url, 'http://heroku.com')
 
 @app.route('/')
 def output():
