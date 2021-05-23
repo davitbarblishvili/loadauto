@@ -13,8 +13,7 @@ from flask import Flask, render_template, request
 
 
 
-class acv(unittest.TestCase):
-   
+class acv():
     def sendMessage(self,textMessage):
         account_sid = 'ACfdaf54ef106ea4f48fae9e78588cd69e'
         auth_token = 'fb15a4c98079021641376ca358215f79'
