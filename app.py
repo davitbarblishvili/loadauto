@@ -18,10 +18,6 @@ from searcher import acv
                                                             
        
 app = Flask(__name__)
-acv = acv()
-acv.initDatabase()
-acv.setUp()
-acv.login()
 q = Queue(connection=conn)
 
 
