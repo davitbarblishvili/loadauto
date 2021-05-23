@@ -8,9 +8,9 @@ import time
 import unittest
 from twilio.rest import Client
 from flask import Flask, render_template, request
-from rq import Queue
-from worker import conn
-from utils import count_words_at_url
+
+
+
 
 
 class acv(unittest.TestCase):
