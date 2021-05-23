@@ -224,7 +224,7 @@ acv.setUp()
 acv.login()
 
 q = Queue(connection=conn)
-result = q.enqueue(count_words_at_url, 'http://heroku.com')
+
 
 @app.route('/')
 def output():
@@ -253,7 +253,10 @@ def worker():
 
     if len(deliv) == 1 and deliv[0] == '':
         for i in pick_up:
-            acv.one_way(i,dollar,minTotalDollar, dist,condition)
+            result = q.enqueue(count_words_at_url, i,dollar, minTotalDollar,dist,condition)
+            print(result)
+            return result
+         #   acv.one_way(i,dollar,minTotalDollar, dist,condition)
 
     if len(deliv) >= 1 and deliv[0]:
         for i in pick_up:
