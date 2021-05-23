@@ -17,7 +17,7 @@ class acv():
 
     def __init__(self):
         print("acv instantiated")
-        
+
     def sendMessage(self,textMessage):
         account_sid = 'ACfdaf54ef106ea4f48fae9e78588cd69e'
         auth_token = 'fb15a4c98079021641376ca358215f79'
@@ -83,7 +83,7 @@ class acv():
     
     def one_way(self,pick_up,dollar,minDollar, dist, condition):
         time.sleep(1)
-        acv.mainPage()
+        self.mainPage()
         self.webdriver.find_element_by_xpath("//select[@name='p_filter']/option[text()='"+ pick_up + "']").click()
         filter_tab = self.webdriver.find_element_by_xpath("//input[@name='Filter']")
         self.webdriver.execute_script("arguments[0].click();", filter_tab)
@@ -91,7 +91,7 @@ class acv():
 
     def two_way(self, pick_up, delivery, dollar, minDollar,  dist, condition):
         time.sleep(1)
-        acv.mainPage()
+        self.mainPage()
         self.webdriver.find_element_by_xpath("//select[@name='p_filter']/option[text()='"+ pick_up + "']").click()
         self.webdriver.find_element_by_xpath("//select[@name='d_filter']/option[text()='"+ delivery + "']").click()
         filter_tab = self.webdriver.find_element_by_xpath("//input[@name='Filter']")
