@@ -120,7 +120,8 @@ class acv():
                         self.sendMessage(message)
                         self.addData(info_array[0])
                         return self.two_way(pick_up,delivery, dollar,minDollar,  dist, condition)
-                        
+
+        return             
         self.refreshPage()
         return self.iterateStatesTwoWay(pick_up,delivery, dollar, minDollar, dist, condition)
         
@@ -150,7 +151,7 @@ class acv():
                         self.sendMessage(message)
                         self.addData(info_array[0])
                         return self.two_way(pick_up,delivery, dollar, minDollar, dist, condition)
-                        
+        return              
         self.refreshPage()
         return self.iterateStatesTwoWayHelper(pick_up,delivery, dollar, minDollar,  dist, condition)
                                 
@@ -182,9 +183,9 @@ class acv():
                         self.sendMessage(message)
                         self.addData(info_array[0])
                         return self.one_way(pick_up,dollar,minDollar, dist,condition)
-                        
+
+        return             
         self.refreshPage()
-        return "200"
         return self.iterateStaesOneWay(pick_up, dollar, minDollar, dist, condition)
                             
     def iterateStatesOneWayHelper(self,pick_up, dollar,minDollar,  dist, condition):
@@ -211,5 +212,6 @@ class acv():
                         self.sendMessage(message)
                         self.addData(info_array[0])
                         return self.one_way(pick_up,dollar,minDollar,  dist, condition)
+        return
         self.refreshPage()
         return self.iterateStaesOneWayHelper(pick_up, dollar, minDollar, dist, condition)

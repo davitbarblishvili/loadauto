@@ -37,14 +37,14 @@ def worker():
         for i in pick_up:
             result = q.enqueue(one_state_search, i,dollar, minTotalDollar,dist,condition)
         
-        return "200"
+        return
          
 
     if len(deliv) >= 1 and deliv[0]:
         for i in pick_up:
             for j in deliv:
                 result = q.enqueue(two_state_search, i,j, dollar, minTotalDollar,  dist, condition)
-        return "200"
+        return
 
 if __name__ == "__main__":
     app.run(threaded=True)
