@@ -1,21 +1,8 @@
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-import firebase_admin
-from selenium.webdriver.chrome.options import Options
-from firebase_admin import credentials
-from firebase_admin import firestore
-import time
-import unittest
-from twilio.rest import Client
 from flask import Flask, render_template, request
 from rq import Queue
 from worker import conn
-from utils import count_words_at_url
-from searcher import acv
-
-
-
-                                                            
+from utils import one_state_search
+from utils import two_state_search
        
 app = Flask(__name__)
 q = Queue(connection=conn)
@@ -48,15 +35,16 @@ def worker():
 
     if len(deliv) == 1 and deliv[0] == '':
         for i in pick_up:
-            result = q.enqueue(count_words_at_url, i,dollar, minTotalDollar,dist,condition)
-         #   acv.one_way(i,dollar,minTotalDollar, dist,condition)
+            result = q.enqueue(one_state_search, i,dollar, minTotalDollar,dist,condition)
+        
+        return "200"
+         
 
     if len(deliv) >= 1 and deliv[0]:
         for i in pick_up:
             for j in deliv:
-                acv.two_way(i,j, dollar, minTotalDollar,  dist, condition)
-
-
+                result = q.enqueue(two_state_search, i,j, dollar, minTotalDollar,  dist, condition)
+        return "200"
 
 if __name__ == "__main__":
     app.run(threaded=True)
