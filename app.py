@@ -45,13 +45,13 @@ def worker():
             print("searching again")
             for i in pick_up:
                 result = q.enqueue(one_state_search, i,dollar, minTotalDollar,dist,condition)
-            return
+        
          
         if len(deliv) >= 1 and deliv[0]:
             for i in pick_up:
                 for j in deliv:
                     result = q.enqueue(two_state_search, i,j, dollar, minTotalDollar,  dist, condition)
-            return
+            
     
         if time.time() > start + PERIOD_OF_TIME : break
 
