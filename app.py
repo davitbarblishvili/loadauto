@@ -17,7 +17,7 @@ def output():
 	return render_template('acvlanding.html')
 
 @app.route('/receiver', methods = ['POST','GET'])
-def worker():
+def server_worker():
 
     data = request.get_json()
     pick_up = data[0]['pu']
