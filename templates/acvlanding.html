@@ -303,7 +303,7 @@
 	                        	<div class="wizard-footer">
 	                            	<div class="pull-right">
 	                                    <input type='button' class='btn btn-next btn-fill btn-danger btn-wd' name='next' value='Next' />
-	                                    <input type='button' class='btn btn-finish btn-fill btn-danger btn-wd' name='finish' value='Submit' id = 'theButton'
+	                                    <input type='button' class='btn btn-finish btn-fill btn-danger btn-wd' name='finish' value='Start Searching' id = 'theButton'
 	                                    />
 	                                </div>
 	                                <div class="pull-left">
@@ -364,12 +364,12 @@
 		document.getElementById("theButton").onclick = function() {
 			
 			var property = document.getElementById("theButton");
-			if (property.value=="Submit"){
-				property.value = "Submitted!"
+			if (property.value=="Start Searching"){
+				property.value = "Stop searching"
 				property.style.background = '#0000A0';
 				doWork()
 			}else{
-				property.value = "Submit"
+				property.value = "Start Searching"
 				property.style.background = '#E15241';
 				stop()
 			}
@@ -383,7 +383,7 @@
     $.ajax({
         type: 'POST',
         url: '/receiver',
-        data: JSON.stringify (test),
+        data: JSON.stringify (stopMessage),
         success: function(data) { alert('data: ' + data); },
         contentType: "application/json",
         dataType: 'json'

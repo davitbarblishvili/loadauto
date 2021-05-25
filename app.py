@@ -21,6 +21,9 @@ def worker():
 
     data = request.get_json()
     pick_up = data[0]['pu']
+    if pick_up == 'stop':
+        print("hello")
+        return 'OK'
     deliv = data[1]['del']
     minTotalDollar = str(data[2]['minTotal'])
     dollar = str(data[3]['minDollar'])
@@ -36,21 +39,20 @@ def worker():
     if condition == 'Inoperable':
         condition = 'INOP'
 
-    start = time.time()
-    PERIOD_OF_TIME = 120
-
     
-
     if len(deliv) == 1 and deliv[0] == '':
         print("searching again")
         for i in pick_up:
             result = q.enqueue(one_state_search, i,dollar, minTotalDollar,dist,condition)
+        print("done")
+        return 'OK'
         
          
     if len(deliv) >= 1 and deliv[0]:
         for i in pick_up:
             for j in deliv:
                 result = q.enqueue(two_state_search, i,j, dollar, minTotalDollar,  dist, condition)
+        return 'OK'
             
     
 
