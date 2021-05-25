@@ -3,12 +3,12 @@ from rq import Queue
 from worker import conn
 from utils import one_state_search
 from utils import two_state_search
-import time
+
 
 
        
 app = Flask(__name__)
-q = Queue(connection=conn)
+
 
 
 @app.route('/')
@@ -18,6 +18,8 @@ def output():
 
 @app.route('/receiver', methods = ['POST','GET'])
 def server_worker():
+    q = Queue(connection=conn)
+    print(q)
 
     data = request.get_json()
     pick_up = data[0]['pu']
