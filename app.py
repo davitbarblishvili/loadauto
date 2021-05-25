@@ -9,8 +9,6 @@ from utils import two_state_search
        
 app = Flask(__name__)
 
-
-
 @app.route('/')
 def output():
 # serve index template

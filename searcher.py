@@ -119,9 +119,10 @@ class acv():
                         message += "Delivery: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13]
                         self.sendMessage(message)
                         self.addData(info_array[0])
+                        return 'OK'
                         return self.two_way(pick_up,delivery, dollar,minDollar,  dist, condition)
 
-        return             
+        return 'OK'          
         self.refreshPage()
         return self.iterateStatesTwoWay(pick_up,delivery, dollar, minDollar, dist, condition)
         
