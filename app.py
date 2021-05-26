@@ -23,7 +23,7 @@ def server_worker():
     data = request.get_json()
     pick_up = data[0]['pu']
     if pick_up == 'stop':
-        cancel_job(job_id,connection=conn)
+        cancel_job(str(job_id),connection=conn)
         q.empty()
         return 'OK'
     deliv = data[1]['del']
