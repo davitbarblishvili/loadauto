@@ -3,6 +3,7 @@ from rq import Queue
 from worker import conn
 from utils import one_state_search
 from utils import two_state_search
+from rq import cancel_job
 
        
 app = Flask(__name__)
@@ -44,6 +45,7 @@ def server_worker():
         print("searching again")
         for i in pick_up:
             result = q.enqueue(one_state_search, i,dollar, minTotalDollar,dist,condition)
+            print(result.id)
             q.empty()
 
         return 'OK'
