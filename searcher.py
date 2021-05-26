@@ -186,7 +186,7 @@ class acv():
                         self.addData(info_array[0])
                         return self.one_way(pick_up,dollar,minDollar, dist,condition)
 
-        return             
+        return 'ok'         
         self.refreshPage()
         return self.iterateStaesOneWay(pick_up, dollar, minDollar, dist, condition)
                             
