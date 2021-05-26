@@ -1,6 +1,7 @@
 import searcher
 
 def one_state_search(pick_up_state,dollar, minTotalDollar,dist,condition):  
+    print("inside the function")
     acv = searcher.acv()
     acv.initDatabase()
     acv.setUp()

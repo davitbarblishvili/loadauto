@@ -4,8 +4,6 @@ from worker import conn
 from utils import one_state_search
 from utils import two_state_search
 
-
-
        
 app = Flask(__name__)
 
@@ -17,7 +15,7 @@ def output():
 @app.route('/receiver', methods = ['POST','GET'])
 def server_worker():
     q = Queue(connection=conn)
-    print(q)
+ 
 
     data = request.get_json()
     pick_up = data[0]['pu']
@@ -43,6 +41,7 @@ def server_worker():
     if len(deliv) == 1 and deliv[0] == '':
         print("searching again")
         for i in pick_up:
+            print("inside the for loop")
             result = q.enqueue(one_state_search, i,dollar, minTotalDollar,dist,condition)
         print("done")
         return 'OK'
