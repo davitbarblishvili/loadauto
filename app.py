@@ -6,6 +6,10 @@ from utils import two_state_search
 
        
 app = Flask(__name__)
+q = Queue(connection=conn)
+print(q.count)
+q.empty()
+print(q.count)
 
 @app.route('/')
 def output():
@@ -14,12 +18,13 @@ def output():
 
 @app.route('/receiver', methods = ['POST','GET'])
 def server_worker():
-    q = Queue(connection=conn)
+  
     data = request.get_json()
     pick_up = data[0]['pu']
     if pick_up == 'stop':
         print("hello")
         return 'OK'
+
     deliv = data[1]['del']
     minTotalDollar = str(data[2]['minTotal'])
     dollar = str(data[3]['minDollar'])
@@ -39,8 +44,9 @@ def server_worker():
     if len(deliv) == 1 and deliv[0] == '':
         print("searching again")
         for i in pick_up:
-            print("inside the for loop")
+            print("inside for loop")
             result = q.enqueue(one_state_search, i,dollar, minTotalDollar,dist,condition)
+            print(q.count)
         print("done")
         return 'OK'
         
