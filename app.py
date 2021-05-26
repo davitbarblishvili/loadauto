@@ -21,7 +21,7 @@ def server_worker():
     data = request.get_json()
     pick_up = data[0]['pu']
     if pick_up == 'stop':
-        print("hello")
+        q.empty()
         return 'OK'
 
     deliv = data[1]['del']
