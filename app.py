@@ -7,6 +7,7 @@ from rq import cancel_job
 
        
 app = Flask(__name__)
+job_id = 0
 q = Queue(connection=conn)
 q.empty()
 
@@ -18,8 +19,7 @@ def output():
 
 @app.route('/receiver', methods = ['POST','GET'])
 def server_worker():
-
-    job_id = 0
+    global job_id
     data = request.get_json()
     pick_up = data[0]['pu']
     if pick_up == 'stop':
