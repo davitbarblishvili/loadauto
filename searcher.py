@@ -184,6 +184,7 @@ class acv():
                         message += "Delivery: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13]
                         self.sendMessage(message)
                         self.addData(info_array[0])
+                        return 'OK'
                         return self.one_way(pick_up,dollar,minDollar, dist,condition)
 
         return 'ok'         
