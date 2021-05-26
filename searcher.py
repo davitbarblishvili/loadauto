@@ -122,7 +122,8 @@ class acv():
                         return 'OK'
                         return self.two_way(pick_up,delivery, dollar,minDollar,  dist, condition)
 
-        return 'OK'          
+        return 'OK' 
+                 
         self.refreshPage()
         return self.iterateStatesTwoWay(pick_up,delivery, dollar, minDollar, dist, condition)
         

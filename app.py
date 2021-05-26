@@ -15,8 +15,8 @@ def output():
 @app.route('/receiver', methods = ['POST','GET'])
 def server_worker():
     q = Queue(connection=conn)
- 
-
+    q.count()
+    q.empty()
     data = request.get_json()
     pick_up = data[0]['pu']
     if pick_up == 'stop':
