@@ -23,7 +23,7 @@ def server_worker():
     data = request.get_json()
     pick_up = data[0]['pu']
     if pick_up == 'stop':
-        print("this is global result id" + job_id)
+        print("this is global result id" + str(job_id))
         cancel_job(str(job_id),connection=conn)
         q.empty()
         return 'OK'
@@ -49,7 +49,7 @@ def server_worker():
             result = q.enqueue(one_state_search, i,dollar, minTotalDollar,dist,condition)
             job_id = result.id  
             q.empty()
-            print("this is nested result id" + job_id)
+            print("this is nested result id" + str(job_id))
         return 'OK'
         
          
