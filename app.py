@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from rq import Queue
+from rq import Queue, job
 from worker import conn
 from utils import one_state_search
 from utils import two_state_search
@@ -18,11 +18,14 @@ def output():
 
 @app.route('/receiver', methods = ['POST','GET'])
 def server_worker():
-  
+
+    job_id = 0
     data = request.get_json()
     pick_up = data[0]['pu']
-    
-
+    if pick_up == 'stop':
+        cancel_job(job_id)
+        q.empty()
+        return 'OK'
     deliv = data[1]['del']
     minTotalDollar = str(data[2]['minTotal'])
     dollar = str(data[3]['minDollar'])
@@ -43,10 +46,7 @@ def server_worker():
         print("searching again")
         for i in pick_up:
             result = q.enqueue(one_state_search, i,dollar, minTotalDollar,dist,condition)
-            if pick_up == 'stop':
-                cancel_job(result.id)
-                q.empty()
-                return 'OK'
+            job_id = result.id  
             q.empty()
         return 'OK'
         
