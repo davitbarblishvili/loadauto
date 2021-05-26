@@ -21,9 +21,7 @@ def server_worker():
   
     data = request.get_json()
     pick_up = data[0]['pu']
-    if pick_up == 'stop':
-        q.empty()
-        return 'OK'
+    
 
     deliv = data[1]['del']
     minTotalDollar = str(data[2]['minTotal'])
@@ -45,9 +43,11 @@ def server_worker():
         print("searching again")
         for i in pick_up:
             result = q.enqueue(one_state_search, i,dollar, minTotalDollar,dist,condition)
-            print(result.id)
+            if pick_up == 'stop':
+                cancel_job(result.id)
+                q.empty()
+                return 'OK'
             q.empty()
-
         return 'OK'
         
          
