@@ -6,6 +6,7 @@ from utils import two_state_search
 from rq import cancel_job
 from redis import Redis
 from rq.registry import StartedJobRegistry
+from rq.command import send_stop_job_command
 
        
 app = Flask(__name__)
@@ -25,6 +26,7 @@ def server_worker():
     pick_up = data[0]['pu']
     if pick_up == 'stop':
         registry = StartedJobRegistry(connection=conn)
+        send_stop_job_command(conn, registry)
 
         print(registry)
         #cancel_job(str(job.id),connection=conn)
