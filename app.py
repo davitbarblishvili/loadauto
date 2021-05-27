@@ -28,7 +28,6 @@ def server_worker():
         registry = StartedJobRegistry(connection=conn)
         job_ids = registry.get_job_ids()
         send_stop_job_command(conn, job_ids[0])
-        q.empty()
         return 'OK'
     deliv = data[1]['del']
     minTotalDollar = str(data[2]['minTotal'])
