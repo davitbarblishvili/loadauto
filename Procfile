@@ -1,2 +1,2 @@
 web: gunicorn app:app
-worker: pip exec foreman start -f Procfile.workers
+worker: python3 worker.py
