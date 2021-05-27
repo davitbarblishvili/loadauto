@@ -1,2 +1,2 @@
 web: gunicorn app:app
-worker: supervisord -n
+worker: python3 worker.py
