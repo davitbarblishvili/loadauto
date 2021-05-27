@@ -4,10 +4,10 @@ from worker import conn
 from utils import one_state_search
 from utils import two_state_search
 from rq import cancel_job
+from rq import get_current_job
 
        
 app = Flask(__name__)
-job_id = 0
 q = Queue(connection=conn)
 q.empty()
 
@@ -19,12 +19,13 @@ def output():
 
 @app.route('/receiver', methods = ['POST','GET'])
 def server_worker():
-    global job_id
+    
     data = request.get_json()
     pick_up = data[0]['pu']
     if pick_up == 'stop':
-        print("this is global result id" + str(job_id))
-        cancel_job(str(job_id),connection=conn)
+        job = get_current_job()
+        print("this is global result id" + str(job.id))
+        cancel_job(str(job.id),connection=conn)
         q.empty()
         return 'OK'
     deliv = data[1]['del']
@@ -47,9 +48,6 @@ def server_worker():
         print("searching again")
         for i in pick_up:
             result = q.enqueue(one_state_search, i,dollar, minTotalDollar,dist,condition)
-            job_id = result.id  
-            q.empty()
-            print("this is nested result id" + str(job_id))
         return 'OK'
         
          
