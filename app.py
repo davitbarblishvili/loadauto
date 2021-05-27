@@ -26,8 +26,8 @@ def server_worker():
     pick_up = data[0]['pu']
     if pick_up == 'stop':
         registry = StartedJobRegistry(connection=conn)
-        print(registry.get_job_ids())
-       # send_stop_job_command(conn, registry)
+        job_ids = registry.get_job_ids()
+        send_stop_job_command(conn, job_ids[0])
         #cancel_job(str(job.id),connection=conn)
         q.empty()
         return 'OK'
