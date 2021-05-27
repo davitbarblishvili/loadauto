@@ -4,7 +4,8 @@ from worker import conn
 from utils import one_state_search
 from utils import two_state_search
 from rq import cancel_job
-from rq import get_current_job
+from redis import Redis
+from rq.registry import StartedJobRegistry
 
        
 app = Flask(__name__)
@@ -23,9 +24,10 @@ def server_worker():
     data = request.get_json()
     pick_up = data[0]['pu']
     if pick_up == 'stop':
-        job = get_current_job()
-        print("this is global result id" + str(job.id))
-        cancel_job(str(job.id),connection=conn)
+        registry = StartedJobRegistry(connection=conn)
+
+        print(registry)
+        #cancel_job(str(job.id),connection=conn)
         q.empty()
         return 'OK'
     deliv = data[1]['del']
