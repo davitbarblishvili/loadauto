@@ -28,7 +28,6 @@ def server_worker():
         registry = StartedJobRegistry(connection=conn)
         job_ids = registry.get_job_ids()
         send_stop_job_command(conn, job_ids[0])
-        #cancel_job(str(job.id),connection=conn)
         q.empty()
         return 'OK'
     deliv = data[1]['del']
