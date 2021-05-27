@@ -55,7 +55,6 @@ mccabe==0.6.1
 msgpack==1.0.2
 multidict==4.7.5
 nltk==3.4.5
-numpy==1.18.2
 packaging==20.9
 parsel==1.6.0
 Pillow==7.0.0
@@ -95,3 +94,4 @@ Werkzeug==1.0.0
 wrapt==1.12.1
 yarl==1.4.2
 zope.interface==5.4.0
+supervisor==4.2.2
