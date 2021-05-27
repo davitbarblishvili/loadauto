@@ -1,2 +1,2 @@
 web: gunicorn app:app
-worker: bundle exec foreman start -f Procfile.workers
+worker: pip exec foreman start -f Procfile.workers
