@@ -58,7 +58,7 @@ def server_worker():
     if len(deliv) >= 1 and deliv[0]:
         for i in pick_up:
             for j in deliv:
-                result = q.enqueue(acv.two_way, i,j, dollar, minTotalDollar,  dist, condition)
+                result = q.enqueue(two_state_search,i,j, dollar, minTotalDollar,  dist, condition)
         return 'OK'
             
     
