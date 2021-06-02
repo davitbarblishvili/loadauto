@@ -6,7 +6,7 @@ from utils import two_state_search
 from rq.registry import StartedJobRegistry
 from rq.command import send_stop_job_command
 from searcher import *
-from searcher import two_way
+
 
        
 app = Flask(__name__)
@@ -61,7 +61,7 @@ def server_worker():
     if len(deliv) >= 1 and deliv[0]:
         for i in pick_up:
             for j in deliv:
-                result = q.enqueue(two_way,i,j, dollar, minTotalDollar,  dist, condition)
+                result = q.enqueue(acvObj,i,j, dollar, minTotalDollar,  dist, condition)
         return 'OK'
             
     
