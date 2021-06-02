@@ -1,15 +1,18 @@
 from flask import Flask, render_template, request
-from rq import Queue, job
+from rq import Queue
 from worker import conn
 from utils import one_state_search
 from utils import two_state_search
-from rq import cancel_job
-from redis import Redis
 from rq.registry import StartedJobRegistry
 from rq.command import send_stop_job_command
+import searcher
 
        
 app = Flask(__name__)
+acv = searcher.acv()
+acv.initDatabase()
+acv.setUp()
+acv.login()
 q = Queue(connection=conn)
 q.empty()
 
@@ -48,14 +51,14 @@ def server_worker():
     if len(deliv) == 1 and deliv[0] == '':
         print("searching again")
         for i in pick_up:
-            result = q.enqueue(one_state_search, i,dollar, minTotalDollar,dist,condition)
+            result = q.enqueue(one_state_search, acv, i,dollar, minTotalDollar,dist,condition)
         return 'OK'
         
          
     if len(deliv) >= 1 and deliv[0]:
         for i in pick_up:
             for j in deliv:
-                result = q.enqueue(two_state_search, i,j, dollar, minTotalDollar,  dist, condition)
+                result = q.enqueue(two_state_search,acv, i,j, dollar, minTotalDollar,  dist, condition)
         return 'OK'
             
     
