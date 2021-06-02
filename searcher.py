@@ -53,6 +53,7 @@ class acv():
         option.add_argument('--disable-dev-shm-usage')
         option.binary_location = GOOGLE_CHROME_PATH
         self.webdriver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH,options=option)
+       # self.webdriver = webdriver.Chrome('./chromedriver',options=option)
         self.webdriver.get("https://transport.acvauctions.com/jobs/available.php")
     
     def close(self):
@@ -115,8 +116,8 @@ class acv():
                         self.webdriver.execute_script("arguments[0].click();", check_box[1])
                         select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
                         self.webdriver.execute_script("arguments[0].click();", select_button)
-                        message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
-                        message += "Delivery: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13]
+                        message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[5] + " " + info_array[6] + "\n"
+                        message += "Delivery: " + info_array[9] + " " + info_array[10] + "\n" + "Pay: " + info_array[13]
                         self.sendMessage(message)
                         self.addData(info_array[0])
                         return 'OK'
@@ -148,8 +149,8 @@ class acv():
                         self.webdriver.execute_script("arguments[0].click();", check_box[1])
                         select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
                         self.webdriver.execute_script("arguments[0].click();", select_button)
-                        message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
-                        message += "Delivery: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13]
+                        message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[5] + " " + info_array[6] + "\n"
+                        message += "Delivery: " + info_array[9] + " " + info_array[10] + "\n" + "Pay: " + info_array[13]
                         self.sendMessage(message)
                         self.addData(info_array[0])
                         return self.two_way(pick_up,delivery, dollar, minDollar, dist, condition)
@@ -161,6 +162,8 @@ class acv():
     def iterateStatesOneWay(self,pick_up, dollar,minDollar,  dist, condition):
         if condition == 'Both' or condition == '':
             return self.iterateStatesOneWayHelper(pick_up, dollar, minDollar,  dist, condition)
+
+        print("function call")
                
         self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
         table = self.webdriver.find_element_by_xpath("//table[2]")
@@ -181,15 +184,15 @@ class acv():
                         self.webdriver.execute_script("arguments[0].click();", check_box[1])
                         select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
                         self.webdriver.execute_script("arguments[0].click();", select_button)
-                        message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
-                        message += "Delivery: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13]
+                        message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[5] + " " + info_array[6] + "\n"
+                        message += "Delivery: " + info_array[9] + " " + info_array[10] + "\n" + "Pay: " + info_array[13]
                         self.sendMessage(message)
                         self.addData(info_array[0])
                         return self.one_way(pick_up,dollar,minDollar, dist,condition)
 
-        return 'OK'         
+       # return 'OK'         
         self.refreshPage()
-        return self.iterateStaesOneWay(pick_up, dollar, minDollar, dist, condition)
+        return self.iterateStatesOneWay(pick_up, dollar, minDollar, dist, condition)
                             
     def iterateStatesOneWayHelper(self,pick_up, dollar,minDollar,  dist, condition):
         self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
@@ -210,8 +213,8 @@ class acv():
                         self.webdriver.execute_script("arguments[0].click();", check_box[1])
                         select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
                         self.webdriver.execute_script("arguments[0].click();", select_button)
-                        message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[4] + " " + info_array[5] + "\n"
-                        message += "Delivery: " + info_array[8] + " " + info_array[9] + "\n" + "Pay: " + info_array[13] 
+                        message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[5] + " " + info_array[6] + "\n"
+                        message += "Delivery: " + info_array[9] + " " + info_array[10] + "\n" + "Pay: " + info_array[13]
                         self.sendMessage(message)
                         self.addData(info_array[0])
                         return self.one_way(pick_up,dollar,minDollar,  dist, condition)

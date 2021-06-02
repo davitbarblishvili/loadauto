@@ -13,13 +13,6 @@ app = Flask(__name__)
 q = Queue(connection=conn)
 q.empty()
 
-acvObj = acv()
-acvObj.initDatabase()
-acvObj.setUp()
-acvObj.login()
-
-
-
 @app.route('/')
 def output():
 # serve index template
@@ -54,14 +47,14 @@ def server_worker():
     if len(deliv) == 1 and deliv[0] == '':
         print("searching again")
         for i in pick_up:
-            result = q.enqueue(acvObj.one_way, i,dollar, minTotalDollar,dist,condition)
+            result = q.enqueue(one_state_search, i,dollar, minTotalDollar,dist,condition)
         return 'OK'
         
          
     if len(deliv) >= 1 and deliv[0]:
         for i in pick_up:
             for j in deliv:
-                result = q.enqueue(acvObj,i,j, dollar, minTotalDollar,  dist, condition)
+                result = q.enqueue(two_state_search,i,j, dollar, minTotalDollar,  dist, condition)
         return 'OK'
             
     
