@@ -5,16 +5,19 @@ from utils import one_state_search
 from utils import two_state_search
 from rq.registry import StartedJobRegistry
 from rq.command import send_stop_job_command
-import searcher
+from searcher import *
+from searcher import two_way
 
        
 app = Flask(__name__)
-acv = searcher.acv()
-acv.initDatabase()
-acv.setUp()
-acv.login()
 q = Queue(connection=conn)
 q.empty()
+
+acvObj = acv()
+acvObj.initDatabase()
+acvObj.setUp()
+acvObj.login()
+
 
 
 @app.route('/')
@@ -51,14 +54,14 @@ def server_worker():
     if len(deliv) == 1 and deliv[0] == '':
         print("searching again")
         for i in pick_up:
-            result = q.enqueue(acv.one_way, i,dollar, minTotalDollar,dist,condition)
+            result = q.enqueue(acvObj.one_way, i,dollar, minTotalDollar,dist,condition)
         return 'OK'
         
          
     if len(deliv) >= 1 and deliv[0]:
         for i in pick_up:
             for j in deliv:
-                result = q.enqueue(two_state_search,i,j, dollar, minTotalDollar,  dist, condition)
+                result = q.enqueue(two_way,i,j, dollar, minTotalDollar,  dist, condition)
         return 'OK'
             
     
