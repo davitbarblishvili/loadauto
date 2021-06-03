@@ -82,7 +82,7 @@ class acv():
         self.webdriver.find_element_by_xpath("//select[@name='p_filter']/option[text()='"+ pick_up + "']").click()
         filter_tab = self.webdriver.find_element_by_xpath("//input[@name='Filter']")
         self.webdriver.execute_script("arguments[0].click();", filter_tab)
-        return self.iterateStatesOneWay(pick_up, dollar, minDollar, dist, condition)
+        return "OK",self.iterateStatesOneWay(pick_up, dollar, minDollar, dist, condition)
 
     def two_way(self, pick_up, delivery, dollar, minDollar,  dist, condition):
         time.sleep(1)
@@ -192,7 +192,7 @@ class acv():
 
        # return 'OK'         
         self.refreshPage()
-        return self.iterateStatesOneWay(pick_up, dollar, minDollar, dist, condition)
+        return "OK",self.iterateStatesOneWay(pick_up, dollar, minDollar, dist, condition)
                             
     def iterateStatesOneWayHelper(self,pick_up, dollar,minDollar,  dist, condition):
         self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
