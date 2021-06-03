@@ -1,4 +1,5 @@
 import searcher
+from rq import get_current_job
 
 def one_state_search(pick_up_state,dollar, minTotalDollar,dist,condition):  
     print("inside the function")
@@ -6,7 +7,7 @@ def one_state_search(pick_up_state,dollar, minTotalDollar,dist,condition):
     acv.initDatabase()
     acv.setUp()
     acv.login()
-    return 'OK',acv.one_way(pick_up_state,dollar,minTotalDollar,dist,condition)
+    return acv.one_way(pick_up_state,dollar,minTotalDollar,dist,condition)
 
 def two_state_search(pick_up_state,delivery_state, dollar, minTotalDollar,dist,condition):  
     acv = searcher.acv()

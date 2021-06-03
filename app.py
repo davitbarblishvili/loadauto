@@ -6,6 +6,7 @@ from utils import two_state_search
 from rq.registry import StartedJobRegistry
 from rq.command import send_stop_job_command
 from searcher import *
+from rq import get_current_job
 
 
        
@@ -26,9 +27,9 @@ class mainApp():
         pick_up = data[0]['pu']
         if pick_up == 'stop':
             registry = StartedJobRegistry(connection=conn)
-            job_ids = registry.get_job_ids()
-            for i in range(len(job_ids)):
-                send_stop_job_command(conn, job_ids[i])
+            running_job_ids = registry.get_job_ids() 
+            print(running_job_ids)
+            send_stop_job_command(conn, running_job_ids[0])
             return 'OK'
         deliv = data[1]['del']
         minTotalDollar = str(data[2]['minTotal'])
