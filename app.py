@@ -47,14 +47,14 @@ def server_worker():
     if len(deliv) == 1 and deliv[0] == '':
         print("searching again")
         for i in pick_up:
-            result = q.enqueue(one_state_search, args=(i,dollar, minTotalDollar,dist,condition),timeout=32500)
+            result = q.enqueue(one_state_search, args=(i,dollar, minTotalDollar,dist,condition),job_timeout=-1)
         return 'OK'
         
          
     if len(deliv) >= 1 and deliv[0]:
         for i in pick_up:
             for j in deliv:
-                result = q.enqueue(two_state_search,i,j, dollar, minTotalDollar,  dist, condition)
+                result = q.enqueue(two_state_search,args=(i,j, dollar, minTotalDollar,  dist, condition),job_timeout=-1)
         return 'OK'
             
     

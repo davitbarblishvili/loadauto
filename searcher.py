@@ -51,9 +51,9 @@ class acv():
         option.add_argument('headless')
         option.add_argument('--disable-gpu')
         option.add_argument('--disable-dev-shm-usage')
-        option.binary_location = GOOGLE_CHROME_PATH
-        self.webdriver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH,options=option)
-       # self.webdriver = webdriver.Chrome('./chromedriver',options=option)
+       # option.binary_location = GOOGLE_CHROME_PATH
+       # self.webdriver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH,options=option)
+        self.webdriver = webdriver.Chrome('./chromedriver',options=option)
         self.webdriver.get("https://transport.acvauctions.com/jobs/available.php")
     
     def close(self):
@@ -82,7 +82,7 @@ class acv():
         self.webdriver.find_element_by_xpath("//select[@name='p_filter']/option[text()='"+ pick_up + "']").click()
         filter_tab = self.webdriver.find_element_by_xpath("//input[@name='Filter']")
         self.webdriver.execute_script("arguments[0].click();", filter_tab)
-        return "OK",self.iterateStatesOneWay(pick_up, dollar, minDollar, dist, condition)
+        return self.iterateStatesOneWay(pick_up, dollar, minDollar, dist, condition)
 
     def two_way(self, pick_up, delivery, dollar, minDollar,  dist, condition):
         time.sleep(1)
@@ -122,9 +122,7 @@ class acv():
                         self.addData(info_array[0])
                         return 'OK'
                         return self.two_way(pick_up,delivery, dollar,minDollar,  dist, condition)
-
-        return 'OK' 
-                 
+         
         self.refreshPage()
         return self.iterateStatesTwoWay(pick_up,delivery, dollar, minDollar, dist, condition)
         
@@ -153,8 +151,7 @@ class acv():
                         message += "Delivery: " + info_array[9] + " " + info_array[10] + "\n" + "Pay: " + info_array[13]
                         self.sendMessage(message)
                         self.addData(info_array[0])
-                        return self.two_way(pick_up,delivery, dollar, minDollar, dist, condition)
-        return              
+                        return self.two_way(pick_up,delivery, dollar, minDollar, dist, condition)             
         self.refreshPage()
         return self.iterateStatesTwoWayHelper(pick_up,delivery, dollar, minDollar,  dist, condition)
                                 
@@ -192,7 +189,7 @@ class acv():
 
        # return 'OK'         
         self.refreshPage()
-        return "OK",self.iterateStatesOneWay(pick_up, dollar, minDollar, dist, condition)
+        return self.iterateStatesOneWay(pick_up, dollar, minDollar, dist, condition)
                             
     def iterateStatesOneWayHelper(self,pick_up, dollar,minDollar,  dist, condition):
         self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
@@ -218,6 +215,5 @@ class acv():
                         self.sendMessage(message)
                         self.addData(info_array[0])
                         return self.one_way(pick_up,dollar,minDollar,  dist, condition)
-        return
         self.refreshPage()
         return self.iterateStaesOneWayHelper(pick_up, dollar, minDollar, dist, condition)
