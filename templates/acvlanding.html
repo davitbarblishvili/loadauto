@@ -56,8 +56,8 @@
                                     <form id = "login-form" accept-charset="UTF-8">
                                     <input id="email" class="form-control" type="text" placeholder="Email" name="email" required>
                                     <input id="password" class="form-control" type="password" placeholder="Password" name="password" required>
-									<input type="checkbox" value="lsRememberMe" id="rememberMe"> <label for="rememberMe">Remember me</label>
-                                    <input class="btn btn-default btn-login" type="button" value="Login" onclick="lsRememberMe()" id="loginbtn">
+									
+                                    <input class="btn btn-default btn-login" type="button" value="Login" id="loginbtn">
                                     </form>
                                 </div>
                              </div>
@@ -81,12 +81,12 @@
                     <div class="modal-footer">
                         <div class="forgot login-footer">
                             <span>Looking to
-                                 <a href="javascript: showRegisterForm();">create an account</a>
+                                 <a  href="javascript: showRegisterForm();">create an account</a>
                             ?</span>
                         </div>
                         <div class="forgot register-footer" style="display:none">
                              <span>Already have an account?</span>
-                             <a href="javascript: showLoginForm();">Login</a>
+                             <a id="loginid" href="javascript: showLoginForm();">Login</a>
                         </div>
                     </div>
     		      </div>
@@ -346,7 +346,7 @@
   firebase.initializeApp(firebaseConfig);
   firebase.analytics();
 
-  const auth = firebase.auth();
+  var auth = firebase.auth();
   const db = firebase.firestore();
 
   db.settings({timestampsInSnapshots: true});

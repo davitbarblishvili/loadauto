@@ -12,8 +12,6 @@ document.getElementById("signupbtn").addEventListener("click", function() {
         return;
     }
 
-
-
     auth.createUserWithEmailAndPassword(email, password).then(cred => {
         return db.collection('users').doc(cred.user.uid).set({
             fname:firstName,
@@ -23,22 +21,18 @@ document.getElementById("signupbtn").addEventListener("click", function() {
             phone:phone
         });
     }).then(() => {
-        $('#loginModal').modal('hide');
-    })
-    .catch(function(error) {
-        console.log("Login Failed!", error);
-        window.alert("User already exists", error);
-    });
-});
 
-const loginForm = document.getElementById('login-form');
-document.getElementById("loginbtn").addEventListener("click", function() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    auth.signInWithEmailAndPassword(email, password).then(cred => {
-        console.log(cred.user);
-        $('#loginModal').modal('hide');
-        loginForm.reset();
+        $('#loginModal .registerBox').fadeOut('fast',function(){
+            $('.loginBox').fadeIn('fast');
+            $('.register-footer').fadeOut('fast',function(){
+                $('.login-footer').fadeIn('fast');    
+            });
+            
+            $('.modal-title').html('Login with');
+        });       
+         $('.error').removeClass('alert alert-danger').html(''); 
+         signUpForm.reset();
+        
     })
     .catch(error => {
         switch (error.code) {
@@ -66,11 +60,24 @@ document.getElementById("loginbtn").addEventListener("click", function() {
 });
 
 
+const loginForm = document.getElementById('login-form');
+document.getElementById("loginbtn").addEventListener("click", function() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    auth.signInWithEmailAndPassword(email, password).then(cred => {
+        auth.setPersistence('session');
+        console.log(cred.user);
+        $('#loginModal').modal('hide');
+        loginForm.reset();
+        
+    });
+});
+
 const logoutBtn = document.getElementById('logoutbtn');
 logoutBtn.addEventListener('click',(e)=> {
     e.preventDefault();
     auth.signOut().then(() => {
-        console.log("use signed out");
+        console.log("user signed out");
         $('#loginModal').modal('show');
     });
 });
@@ -86,3 +93,6 @@ $(function () {
         }
     });
  });
+
+
+ 
