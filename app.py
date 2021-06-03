@@ -26,7 +26,7 @@ def server_worker():
     if pick_up == 'stop':
         registry = StartedJobRegistry(connection=conn)
         job_ids = registry.get_job_ids()
-        for i in job_ids:
+        for i in range(len(job_ids)):
             send_stop_job_command(conn, job_ids[i])
         return 'OK'
     deliv = data[1]['del']
