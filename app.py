@@ -7,6 +7,7 @@ from rq.registry import StartedJobRegistry
 from rq.command import send_stop_job_command
 from searcher import *
 from rq import get_current_job
+import time
 
 
        
@@ -14,7 +15,8 @@ app = Flask(__name__)
 class mainApp():
     q = Queue(connection=conn)
     q.empty()
-
+    
+    
     @app.route('/')
     def output():
     # serve index template
@@ -24,19 +26,26 @@ class mainApp():
     def server_worker():
     
         data = request.get_json()
-        pick_up = data[0]['pu']
+        print(data)
+        pick_up = data[0]['pu']     
         if pick_up == 'stop':
+            jobId = str(data[1]['jobid'])
+            print(data[1]['jobid'])
             registry = StartedJobRegistry(connection=conn)
             running_job_ids = registry.get_job_ids() 
             print(running_job_ids)
-            send_stop_job_command(conn, running_job_ids[0])
+            send_stop_job_command(conn, jobId )
             return 'OK'
         deliv = data[1]['del']
         minTotalDollar = str(data[2]['minTotal'])
         dollar = str(data[3]['minDollar'])
         dist = str(data[4]['maxDist'])
         condition = str(data[5]['inop'])
-
+        jobid = str(data[6]['jobid'])
+        print(jobid)
+        
+       
+    
         dollar = 0.0 if dollar == '' or dollar == '---' else float(dollar)
         minTotalDollar = 0.0 if minTotalDollar == '' or minTotalDollar == '---' else float(minTotalDollar)
         dist = float("inf") if dist == '' or dist == '---' else float(dist)
@@ -50,7 +59,7 @@ class mainApp():
         if len(deliv) == 1 and deliv[0] == '':
             print("searching again")
             for i in pick_up:
-                result = mainApp.q.enqueue(one_state_search, args=(i,dollar, minTotalDollar,dist,condition),job_timeout=-1)
+                result = mainApp.q.enqueue(one_state_search, args=(i,dollar, minTotalDollar,dist,condition),job_id=jobid,job_timeout=-1)
             return 'OK'
             
             

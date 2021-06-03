@@ -375,10 +375,12 @@
 			}
 		};
 	}
+	var job_id = Date.now();
 
 	function stop(){
 		var stopMessage = [
-		 {"pu": "stop" }
+		 {"pu": "stop" },
+		 {"jobid" : job_id},
 	 ];
     $.ajax({
         type: 'POST',
@@ -403,6 +405,7 @@
 		 {"minDollar":$('#mindollar').val() },
 		 {"maxDist":$('#maxdistance').val() },
 		 {"inop":$('#inop :selected').text() },
+		 {"jobid":  job_id}
 	 ];
     $.ajax({
         type: 'POST',
