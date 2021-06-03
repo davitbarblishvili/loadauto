@@ -26,7 +26,8 @@ def server_worker():
     if pick_up == 'stop':
         registry = StartedJobRegistry(connection=conn)
         job_ids = registry.get_job_ids()
-        send_stop_job_command(conn, job_ids[0])
+        for i in job_ids:
+            send_stop_job_command(conn, job_ids[i])
         return 'OK'
     deliv = data[1]['del']
     minTotalDollar = str(data[2]['minTotal'])
