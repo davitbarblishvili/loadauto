@@ -53,7 +53,7 @@ class acv():
         option.add_argument('--disable-dev-shm-usage')
         option.binary_location = GOOGLE_CHROME_PATH
         self.webdriver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH,options=option)
-       # self.webdriver = webdriver.Chrome('./chromedriver',options=option)
+        #self.webdriver = webdriver.Chrome('./chromedriver',options=option)
         self.webdriver.get("https://transport.acvauctions.com/jobs/available.php")
     
     def close(self):
