@@ -161,6 +161,7 @@ class acv():
             return self.iterateStatesOneWayHelper(pick_up, dollar, minDollar,  dist, condition)
 
         print("function call")
+        print("searching " + pick_up)
                
         self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
         table = self.webdriver.find_element_by_xpath("//table[2]")
