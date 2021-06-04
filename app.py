@@ -6,8 +6,7 @@ from utils import two_state_search
 from rq.registry import StartedJobRegistry
 from rq.command import send_stop_job_command
 from searcher import *
-from rq import get_current_job
-import time
+
 
 
        
