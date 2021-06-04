@@ -33,7 +33,6 @@ class mainApp():
             print(running_job_ids)
             jobId = str(data[1]['jobid'])
             send_stop_job_command(conn, jobId )
-            send_stop_job_command(conn, jobId )
             return 'OK'
         deliv = data[1]['del']
         minTotalDollar = str(data[2]['minTotal'])
