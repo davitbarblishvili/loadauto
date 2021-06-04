@@ -26,14 +26,12 @@ class mainApp():
     def server_worker():
     
         data = request.get_json()
-        print(data)
         pick_up = data[0]['pu']     
         if pick_up == 'stop':
-            jobId = str(data[1]['jobid'])
-            print(data[1]['jobid'])
             registry = StartedJobRegistry(connection=conn)
-            running_job_ids = registry.get_job_ids() 
+            running_job_ids = registry.get_job_ids()
             print(running_job_ids)
+            jobId = str(data[1]['jobid'])
             send_stop_job_command(conn, jobId )
             return 'OK'
         deliv = data[1]['del']
@@ -42,9 +40,7 @@ class mainApp():
         dist = str(data[4]['maxDist'])
         condition = str(data[5]['inop'])
         jobid = str(data[6]['jobid'])
-        print(jobid)
         
-       
     
         dollar = 0.0 if dollar == '' or dollar == '---' else float(dollar)
         minTotalDollar = 0.0 if minTotalDollar == '' or minTotalDollar == '---' else float(minTotalDollar)
