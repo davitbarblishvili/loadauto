@@ -192,28 +192,29 @@ class acv():
         return self.iterateStatesOneWay(pick_up, dollar, minDollar, dist, condition)
                             
     def iterateStatesOneWayHelper(self,pick_up, dollar,minDollar,  dist, condition):
-        self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
-        table = self.webdriver.find_element_by_xpath("//table[2]")
-        for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
-            info_array = [] 
-            check_box = row.find_elements_by_xpath(".//input[@type='checkbox']")
-            for td in row.find_elements_by_xpath(".//td[@class='arial14']"):      
-                if td.text:
-                    info_array.append(td.text)
-            if self.checkData(info_array[0]) == False:
-                distance = info_array[12]
-                if distance == '---':
-                    continue
-                pay = info_array[13][1:]
-                if float(pay)/float(distance) >= dollar and float(distance) < dist: 
-                    if minDollar <= float(pay):
-                        self.webdriver.execute_script("arguments[0].click();", check_box[1])
-                        select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
-                        self.webdriver.execute_script("arguments[0].click();", select_button)
-                        message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[5] + " " + info_array[6] + "\n"
-                        message += "Delivery: " + info_array[9] + " " + info_array[10] + "\n" + "Pay: " + info_array[13]
-                        self.sendMessage(message)
-                        self.addData(info_array[0])
-                        return self.one_way(pick_up,dollar,minDollar,  dist, condition)
-        self.refreshPage()
-        return self.iterateStatesOneWayHelper(pick_up, dollar, minDollar, dist, condition)
+        while True:
+            self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
+            table = self.webdriver.find_element_by_xpath("//table[2]")
+            for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
+                info_array = [] 
+                check_box = row.find_elements_by_xpath(".//input[@type='checkbox']")
+                for td in row.find_elements_by_xpath(".//td[@class='arial14']"):      
+                    if td.text:
+                        info_array.append(td.text)
+                if self.checkData(info_array[0]) == False:
+                    distance = info_array[12]
+                    if distance == '---':
+                        continue
+                    pay = info_array[13][1:]
+                    if float(pay)/float(distance) >= dollar and float(distance) < dist: 
+                        if minDollar <= float(pay):
+                            self.webdriver.execute_script("arguments[0].click();", check_box[1])
+                            select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
+                            self.webdriver.execute_script("arguments[0].click();", select_button)
+                            message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[5] + " " + info_array[6] + "\n"
+                            message += "Delivery: " + info_array[9] + " " + info_array[10] + "\n" + "Pay: " + info_array[13]
+                            self.sendMessage(message)
+                            self.addData(info_array[0])
+                            return self.one_way(pick_up,dollar,minDollar,  dist, condition)
+            self.refreshPage()
+        
