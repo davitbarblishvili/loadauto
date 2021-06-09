@@ -110,6 +110,7 @@ class acv():
                 for td in row.find_elements_by_xpath(".//td[@class='arial14']"):      
                     if td.text:
                         info_array.append(td.text)
+                print(info_array)
                 if self.checkData(info_array[0]) == False:
                     distance = info_array[12]
                     if distance == '---':
