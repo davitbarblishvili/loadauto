@@ -61,7 +61,7 @@ class mainApp():
         if len(deliv) >= 1 and deliv[0]:
             for i in pick_up:
                 for j in deliv:
-                    result = mainApp.q.enqueue(two_state_search,args=(i,j, dollar, minTotalDollar,  dist, condition),job_timeout=-1)
+                    result = mainApp.q.enqueue(two_state_search,args=(i,j, dollar, minTotalDollar,  dist, condition),job_id=jobid,job_timeout=-1)
             return 'OK'
             
     
