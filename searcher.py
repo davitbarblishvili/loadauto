@@ -80,7 +80,9 @@ class acv():
         time.sleep(1)
         self.mainPage()
         self.webdriver.find_element_by_xpath("//select[@name='p_filter']/option[text()='"+ pick_up + "']").click()
-        filter_tab = self.webdriver.find_element_by_xpath("//input[@name='Filter']")
+        self.webdriver.find_element_by_xpath("//select[@name='sort']/option[text()='Order ID']").click()
+        self.webdriver.find_element_by_xpath("//select[@name='dir']/option[text()='DESC']").click()
+        filter_tab = self.webdriver.find_element_by_xpath("//input[@name='Sort']")
         self.webdriver.execute_script("arguments[0].click();", filter_tab)
         return self.iterateStatesOneWay(pick_up, dollar, minDollar, dist, condition)
 
@@ -89,7 +91,9 @@ class acv():
         self.mainPage()
         self.webdriver.find_element_by_xpath("//select[@name='p_filter']/option[text()='"+ pick_up + "']").click()
         self.webdriver.find_element_by_xpath("//select[@name='d_filter']/option[text()='"+ delivery + "']").click()
-        filter_tab = self.webdriver.find_element_by_xpath("//input[@name='Filter']")
+        self.webdriver.find_element_by_xpath("//select[@name='sort']/option[text()='Order ID']").click()
+        self.webdriver.find_element_by_xpath("//select[@name='dir']/option[text()='DESC']").click()
+        filter_tab = self.webdriver.find_element_by_xpath("//input[@name='Sort']")
         self.webdriver.execute_script("arguments[0].click();", filter_tab)
         self.iterateStatesTwoWay(pick_up, delivery, dollar, minDollar, dist, condition)
 
