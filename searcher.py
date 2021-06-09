@@ -192,8 +192,7 @@ class acv():
                             self.webdriver.execute_script("arguments[0].click();", select_button)
                             message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[5] + " " + info_array[6] + "\n"
                             message += "Delivery: " + info_array[9] + " " + info_array[10] + "\n" + "Pay: " + info_array[13]
-                            if float(pay)/float(distance) >= 2.50:
-                                self.sendMessage(message)
+                            self.sendMessage(message)
                             self.addData(info_array[0])
                             return self.one_way(pick_up,dollar,minDollar, dist,condition)
         
