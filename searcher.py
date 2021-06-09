@@ -115,8 +115,11 @@ class acv():
                     if distance == '---':
                         continue
                     pay = info_array[13][1:]
+                    print("check completed")
                     if float(pay)/float(distance) >= dollar and float(distance) < dist:
+                        print("came here")
                         if info_array[3] == condition and minDollar <= float(pay):  
+                            print("I am going to reserve")
                             self.webdriver.execute_script("arguments[0].click();", check_box[1])
                             select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
                             self.webdriver.execute_script("arguments[0].click();", select_button)
