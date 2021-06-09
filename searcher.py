@@ -70,7 +70,7 @@ class acv():
         password.send_keys(Keys.ENTER)
 
     def refreshPage(self):
-        self.webdriver.find_element_by_xpath("(//input[@class='btnstyle'])[1]").click()
+        self.webdriver.find_element_by_xpath("(//input[@class='btnstyle'])[3]").click()
 
     def mainPage(self):
         self.webdriver.find_element_by_xpath("(//a[@href='available.php'])[1]").click()
