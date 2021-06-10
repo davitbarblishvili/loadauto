@@ -218,7 +218,7 @@ class acv():
             self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
             table = self.webdriver.find_element_by_xpath("//table[2]")
             for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
-                order_id = table.find_elements_by_xpath("(.//tr[@class='rowheight']//.//td[@class='arial14'])[2]")
+                order_id = table.find_elements_by_xpath("(.//tr[@class='rowheight']//.//td[@class='arial14'])[2]").text
                 print(order_id)
                 info_array = [] 
                 check_box = row.find_elements_by_xpath(".//input[@type='checkbox']")
