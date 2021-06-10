@@ -122,33 +122,30 @@ class acv():
             self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
             table = self.webdriver.find_element_by_xpath("//table[2]")
             for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
+                order_id = row.find_elements_by_xpath("(.//td[@class='arial14'])[2]")[0].text
+                if(self.check_order_id(order_id)):     
+                    continue
                 info_array = [] 
                 check_box = row.find_elements_by_xpath(".//input[@type='checkbox']")
                 for td in row.find_elements_by_xpath(".//td[@class='arial14']"):      
                     if td.text:
                         info_array.append(td.text)
-                print(info_array)
                 if self.checkData(info_array[0]) == False:
                     distance = info_array[12]
                     if distance == '---':
                         continue
                     pay = info_array[13][1:]
-                    print("check completed")
                     if float(pay)/float(distance) >= dollar and float(distance) < dist:
-                        print("came here")
-                        print(condition)
-                        print(info_array[3])
-                        print(minDollar)
-                        print(pay)
                         if info_array[3] == condition and minDollar <= float(pay):  
-                            print("I am going to reserve")
                             self.webdriver.execute_script("arguments[0].click();", check_box[1])
                             select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
                             self.webdriver.execute_script("arguments[0].click();", select_button)
                             message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[5] + " " + info_array[6] + "\n"
                             message += "Delivery: " + info_array[9] + " " + info_array[10] + "\n" + "Pay: " + info_array[13]
+                            print("staged " + order_id)
                             self.sendMessage(message)
                             self.addData(info_array[0])
+                            self.addLoad(order_id)
                             return self.two_way(pick_up,delivery, dollar,minDollar,  dist, condition)
             
             self.refreshPage()
@@ -163,6 +160,9 @@ class acv():
             self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
             table = self.webdriver.find_element_by_xpath("//table[2]")
             for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
+                order_id = row.find_elements_by_xpath("(.//td[@class='arial14'])[2]")[0].text
+                if(self.check_order_id(order_id)):     
+                    continue
                 info_array = [] 
                 check_box = row.find_elements_by_xpath(".//input[@type='checkbox']")
                 for td in row.find_elements_by_xpath(".//td[@class='arial14']"):      
@@ -180,8 +180,10 @@ class acv():
                             self.webdriver.execute_script("arguments[0].click();", select_button)
                             message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[5] + " " + info_array[6] + "\n"
                             message += "Delivery: " + info_array[9] + " " + info_array[10] + "\n" + "Pay: " + info_array[13]
+                            print("staged " + order_id)
                             self.sendMessage(message)
                             self.addData(info_array[0])
+                            self.addLoad(order_id)
                             return self.two_way(pick_up,delivery, dollar, minDollar, dist, condition)             
             self.refreshPage()
         
@@ -199,7 +201,10 @@ class acv():
             self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
             table = self.webdriver.find_element_by_xpath("//table[2]")
             for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
-                print("came in the for loop")
+                order_id = row.find_elements_by_xpath("(.//td[@class='arial14'])[2]")[0].text
+                if(self.check_order_id(order_id)):     
+                    continue
+
                 info_array = [] 
                 check_box = row.find_elements_by_xpath(".//input[@type='checkbox']")
                 for td in row.find_elements_by_xpath(".//td[@class='arial14']"):      
@@ -217,8 +222,10 @@ class acv():
                             self.webdriver.execute_script("arguments[0].click();", select_button)
                             message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[5] + " " + info_array[6] + "\n"
                             message += "Delivery: " + info_array[9] + " " + info_array[10] + "\n" + "Pay: " + info_array[13]
+                            print("staged " + order_id)
                             self.sendMessage(message)
                             self.addData(info_array[0])
+                            self.addLoad(order_id)
                             return self.one_way(pick_up,dollar,minDollar, dist,condition)
         
             self.refreshPage()
@@ -232,11 +239,9 @@ class acv():
             table = self.webdriver.find_element_by_xpath("//table[2]")
             for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
                 order_id = row.find_elements_by_xpath("(.//td[@class='arial14'])[2]")[0].text
-                print(order_id)
-                if(self.check_order_id(order_id)):
-                    print("I exsit")
+                if(self.check_order_id(order_id)):     
                     continue
-                self.addLoad(order_id)
+               
                 info_array = [] 
                 check_box = row.find_elements_by_xpath(".//input[@type='checkbox']")
                 for td in row.find_elements_by_xpath(".//td[@class='arial14']"):      
@@ -254,8 +259,10 @@ class acv():
                             self.webdriver.execute_script("arguments[0].click();", select_button)
                             message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[5] + " " + info_array[6] + "\n"
                             message += "Delivery: " + info_array[9] + " " + info_array[10] + "\n" + "Pay: " + info_array[13]
+                            print("staged " + order_id)
                             self.sendMessage(message)
                             self.addData(info_array[0])
+                            self.addLoad(order_id)
                             return self.one_way(pick_up,dollar,minDollar,  dist, condition)
             self.refreshPage()
         
