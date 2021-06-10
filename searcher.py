@@ -52,7 +52,7 @@ class acv():
 
     def check_order_id(self, load):
         db = firestore.client()
-        doc_ref = db.collection('checkedIds').document(load)
+        doc_ref = db.collection('checkIds').document(load)
         doc = doc_ref.get()
         return True if doc.exists else False
       
