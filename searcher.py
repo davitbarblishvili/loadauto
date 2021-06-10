@@ -231,7 +231,7 @@ class acv():
             self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
             table = self.webdriver.find_element_by_xpath("//table[2]")
             for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
-                order_id = row.find_elements_by_xpath(".//td[@class='arial14'])[2]")[0].text
+                order_id = row.find_elements_by_xpath("(.//td[@class='arial14'])[2]")[0].text
                 print(order_id)
                 if(self.check_order_id(order_id)):
                     print("I exsit")
