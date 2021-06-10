@@ -37,9 +37,22 @@ class acv():
         db = firestore.client()
         db.collection(u'loadIds').document(load).set(data)
 
+    def addLoad(self, load):
+        data = {
+            u'checked': True
+        }
+        db = firestore.client()
+        db.collection(u'checkIds').document(load).set(data)
+
     def checkData(self, load):
         db = firestore.client()
         doc_ref = db.collection('loadIds').document(load)
+        doc = doc_ref.get()
+        return True if doc.exists else False
+
+    def check_order_id(self, load):
+        db = firestore.client()
+        doc_ref = db.collection('checkedIds').document(load)
         doc = doc_ref.get()
         return True if doc.exists else False
       
@@ -219,7 +232,11 @@ class acv():
             table = self.webdriver.find_element_by_xpath("//table[2]")
             for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
                 order_id = table.find_elements_by_xpath("(.//tr[@class='rowheight']//.//td[@class='arial14'])[2]")[0].text
-                print(order_id)
+                if(self.check_order_id(order_id)):
+                    print(order_id)
+                    print("I exsit")
+                    continue
+                self.addLoad(order_id)
                 info_array = [] 
                 check_box = row.find_elements_by_xpath(".//input[@type='checkbox']")
                 for td in row.find_elements_by_xpath(".//td[@class='arial14']"):      
