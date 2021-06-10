@@ -127,6 +127,7 @@ class acv():
                     print("already checked")   
                     continue
                 info_array = [] 
+                self.addLoad(order_id)
                 check_box = row.find_elements_by_xpath(".//input[@type='checkbox']")
                 for td in row.find_elements_by_xpath(".//td[@class='arial14']"):      
                     if td.text:
@@ -146,7 +147,6 @@ class acv():
                             print("staged " + order_id)
                             self.sendMessage(message)
                             self.addData(info_array[0])
-                            self.addLoad(order_id)
                             return self.two_way(pick_up,delivery, dollar,minDollar,  dist, condition)
             
             self.refreshPage()
@@ -166,6 +166,7 @@ class acv():
                     print("already checked")   
                     continue
                 info_array = [] 
+                self.addLoad(order_id)
                 check_box = row.find_elements_by_xpath(".//input[@type='checkbox']")
                 for td in row.find_elements_by_xpath(".//td[@class='arial14']"):      
                     if td.text:
@@ -185,7 +186,6 @@ class acv():
                             print("staged " + order_id)
                             self.sendMessage(message)
                             self.addData(info_array[0])
-                            self.addLoad(order_id)
                             return self.two_way(pick_up,delivery, dollar, minDollar, dist, condition)             
             self.refreshPage()
         
@@ -209,6 +209,7 @@ class acv():
                     continue
 
                 info_array = [] 
+                self.addLoad(order_id)
                 check_box = row.find_elements_by_xpath(".//input[@type='checkbox']")
                 for td in row.find_elements_by_xpath(".//td[@class='arial14']"):      
                     if td.text:
@@ -228,7 +229,6 @@ class acv():
                             print("staged " + order_id)
                             self.sendMessage(message)
                             self.addData(info_array[0])
-                            self.addLoad(order_id)
                             return self.one_way(pick_up,dollar,minDollar, dist,condition)
         
             self.refreshPage()
@@ -247,6 +247,7 @@ class acv():
                     continue
                
                 info_array = [] 
+                self.addLoad(order_id)
                 check_box = row.find_elements_by_xpath(".//input[@type='checkbox']")
                 for td in row.find_elements_by_xpath(".//td[@class='arial14']"):      
                     if td.text:
@@ -266,7 +267,6 @@ class acv():
                             print("staged " + order_id)
                             self.sendMessage(message)
                             self.addData(info_array[0])
-                            self.addLoad(order_id)
                             return self.one_way(pick_up,dollar,minDollar,  dist, condition)
             self.refreshPage()
         
