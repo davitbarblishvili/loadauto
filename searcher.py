@@ -22,7 +22,7 @@ class acv():
         auth_token = 'fb15a4c98079021641376ca358215f79'
         client = Client(account_sid, auth_token)
 
-        numbers_to_message = ['+19294997605','+16462701432','+17189160758','+13477513536']
+        numbers_to_message = ['+19294997605','+16462701432','+17189160758']
         for number in numbers_to_message:
             message = client.messages \
                 .create(
@@ -118,7 +118,7 @@ class acv():
     def one_way_no_filter(self,pick_up):
         time.sleep(1)
         self.mainPage()
-        self.webdriver.find_element_by_xpath("//select[@name='p_filter']/option[text()='"+ pick_up + "']").click()
+        self.webdriver.find_element_by_xpath("//select[@name='p_filter']/option[text()='"+ pick_up[0] + "']").click()
         self.webdriver.find_element_by_xpath("//select[@name='sort']/option[text()='Order ID']").click()
         self.webdriver.find_element_by_xpath("//select[@name='dir']/option[text()='DESC']").click()
         filter_tab = self.webdriver.find_element_by_xpath("//input[@name='Sort']")
@@ -255,7 +255,7 @@ class acv():
         while True:
 
             print("function call one way no filter")
-            print("searching " + pick_up)
+            print("searching " + pick_up[0])
                
             self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
             table = self.webdriver.find_element_by_xpath("//table[2]")
