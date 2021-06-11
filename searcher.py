@@ -14,7 +14,7 @@ class acv():
     def __init__(self):
         print("acv instantiated")
         self.checked_ids = []
-        print("array size is " + len(self.checked_ids))
+        print("array size is " + str(len(self.checked_ids)))
         
 
     def sendMessage(self,textMessage):
