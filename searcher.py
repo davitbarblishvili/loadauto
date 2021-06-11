@@ -19,7 +19,7 @@ class acv():
         auth_token = 'fb15a4c98079021641376ca358215f79'
         client = Client(account_sid, auth_token)
 
-        numbers_to_message = ['+19294997605','+16462701432','+17189160758']
+        numbers_to_message = ['+19294997605','+16462701432','+17189160758','+13477513536']
         for number in numbers_to_message:
             message = client.messages \
                 .create(
@@ -162,7 +162,7 @@ class acv():
                         print("staged " + order_id)
                         self.sendMessage(message)
                         self.addData(info_array[0])
-                        return self.two_way(pick_up,delivery)
+                        return self.two_way_no_filter(pick_up,delivery)
             
             self.refreshPage()
 
@@ -276,7 +276,7 @@ class acv():
                     print("staged " + order_id)
                     self.sendMessage(message)
                     self.addData(info_array[0])
-                    return self.one_way(pick_up[0])
+                    return self.one_way_no_filter(pick_up[0])
         
             self.refreshPage()
         
