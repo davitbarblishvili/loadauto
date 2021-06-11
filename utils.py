@@ -10,7 +10,8 @@ def no_filter_search(pick_up_state,delivery_state):
     print("inside the function no filter")
     if len(delivery_state) == 1 and delivery_state[0] == '':
         print("inside the function no filter")
-        acv.one_way_no_filter(pick_up_state)
+        for i in pick_up_state:
+            acv.one_way_no_filter(i)
         return 'OK'
     
     acv.two_way_no_filter(pick_up_state,delivery_state)
