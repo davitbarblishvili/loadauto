@@ -3,6 +3,7 @@ from rq import Queue
 from worker import conn
 from utils import one_state_search
 from utils import two_state_search
+from utils import no_filter_search
 from rq.registry import StartedJobRegistry
 from rq.command import send_stop_job_command
 from searcher import *
@@ -39,8 +40,12 @@ class mainApp():
         dist = str(data[4]['maxDist'])
         condition = str(data[5]['inop'])
         jobid = str(data[6]['jobid'])
+
+        if  dollar =='' and minTotalDollar == '' and dist == '':
+            result = mainApp.q.enqueue(no_filter_search, args=(pick_up,deliv),job_id=jobid,job_timeout=-1)
+            return 'OK'
+
         
-    
         dollar = 0.0 if dollar == '' or dollar == '---' else float(dollar)
         minTotalDollar = 0.0 if minTotalDollar == '' or minTotalDollar == '---' else float(minTotalDollar)
         dist = float("inf") if dist == '' or dist == '---' else float(dist)

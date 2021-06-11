@@ -19,7 +19,7 @@ class acv():
         auth_token = 'fb15a4c98079021641376ca358215f79'
         client = Client(account_sid, auth_token)
 
-        numbers_to_message = ['+19294997605','+16462701432']
+        numbers_to_message = ['+19294997605','+16462701432','+17189160758']
         for number in numbers_to_message:
             message = client.messages \
                 .create(
@@ -110,7 +110,62 @@ class acv():
         self.webdriver.find_element_by_xpath("//select[@name='dir']/option[text()='DESC']").click()
         filter_tab = self.webdriver.find_element_by_xpath("//input[@name='Sort']")
         self.webdriver.execute_script("arguments[0].click();", filter_tab)
-        self.iterateStatesTwoWay(pick_up, delivery, dollar, minDollar, dist, condition)
+        return self.iterateStatesTwoWay(pick_up, delivery, dollar, minDollar, dist, condition)
+
+    def one_way_no_filter(self,pick_up):
+        self.mainPage()
+        self.webdriver.find_element_by_xpath("//select[@name='p_filter']/option[text()='"+ pick_up[0] + "']").click()
+        self.webdriver.find_element_by_xpath("//select[@name='sort']/option[text()='Order ID']").click()
+        self.webdriver.find_element_by_xpath("//select[@name='dir']/option[text()='DESC']").click()
+        filter_tab = self.webdriver.find_element_by_xpath("//input[@name='Sort']")
+        self.webdriver.execute_script("arguments[0].click();", filter_tab)
+        return self.iterateStatesOneWayNoFilter(pick_up)
+
+    def two_way_no_filter(self, pick_up, delivery):
+        time.sleep(1)
+        self.mainPage()
+        self.webdriver.find_element_by_xpath("//select[@name='p_filter']/option[text()='"+ pick_up[0] + "']").click()
+        self.webdriver.find_element_by_xpath("//select[@name='d_filter']/option[text()='"+ delivery[0] + "']").click()
+        self.webdriver.find_element_by_xpath("//select[@name='sort']/option[text()='Order ID']").click()
+        self.webdriver.find_element_by_xpath("//select[@name='dir']/option[text()='DESC']").click()
+        filter_tab = self.webdriver.find_element_by_xpath("//input[@name='Sort']")
+        self.webdriver.execute_script("arguments[0].click();", filter_tab)
+        return self.iterateStatesTwoWayNoFilter(pick_up, delivery)
+
+
+    
+    def iterateStatesTwoWayNoFilter(self, pick_up, delivery):
+        while True:
+            print("function call two way no filter")
+            print("searching " + pick_up)
+
+            self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
+            table = self.webdriver.find_element_by_xpath("//table[2]")
+            for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
+                order_id = row.find_elements_by_xpath("(.//td[@class='arial14'])[2]")[0].text
+                if(order_id in self.checked_ids): 
+                    print("already checked")   
+                    continue
+                self.checked_ids.append(order_id)
+                info_array = [] 
+                check_box = row.find_elements_by_xpath(".//input[@type='checkbox']")
+                for td in row.find_elements_by_xpath(".//td[@class='arial14']"):      
+                    if td.text:
+                        info_array.append(td.text)
+                if self.checkData(info_array[0]) == False:
+                        self.webdriver.execute_script("arguments[0].click();", check_box[1])
+                        select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
+                        self.webdriver.execute_script("arguments[0].click();", select_button)
+                        message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[5] + " " + info_array[6] + "\n"
+                        message += "Delivery: " + info_array[9] + " " + info_array[10] + "\n" + "Pay: " + info_array[13]
+                        print("staged " + order_id)
+                        self.sendMessage(message)
+                        self.addData(info_array[0])
+                        return self.two_way(pick_up,delivery)
+            
+            self.refreshPage()
+
+
 
    
     def iterateStatesTwoWay(self,pick_up,delivery,dollar,minDollar,  dist, condition):
@@ -118,9 +173,8 @@ class acv():
             return self.iterateStatesTwoWayHelper(pick_up, delivery, dollar, minDollar, dist, condition)
 
         while True:
-            print("function call")
+            print("function call two way filter")
             print("searching " + pick_up)
-
             self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
             table = self.webdriver.find_element_by_xpath("//table[2]")
             for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
@@ -159,7 +213,7 @@ class acv():
 
     def iterateStatesTwoWayHelper(self,pick_up,delivery, dollar, minDollar,  dist, condition):
         while True:
-            print("function call")
+            print("function call two way filter")
             print("searching " + pick_up)
             self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
             table = self.webdriver.find_element_by_xpath("//table[2]")
@@ -192,6 +246,38 @@ class acv():
                             self.addData(info_array[0])
                             return self.two_way(pick_up,delivery, dollar, minDollar, dist, condition)             
             self.refreshPage()
+
+    def iterateStatesOneWayNoFilter(self,pick_up):
+        while True:
+
+            print("function call one way no filter")
+            print("searching " + pick_up[0])
+               
+            self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
+            table = self.webdriver.find_element_by_xpath("//table[2]")
+            for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
+                order_id = row.find_elements_by_xpath("(.//td[@class='arial14'])[2]")[0].text
+                if(order_id in self.checked_ids): 
+                    print("already checked")   
+                    continue
+                self.checked_ids.append(order_id)
+                info_array = [] 
+                check_box = row.find_elements_by_xpath(".//input[@type='checkbox']")
+                for td in row.find_elements_by_xpath(".//td[@class='arial14']"):      
+                    if td.text:
+                        info_array.append(td.text)
+                if self.checkData(info_array[0]) == False:
+                    self.webdriver.execute_script("arguments[0].click();", check_box[1])
+                    select_button = self.webdriver.find_element_by_xpath("//input[@name='Submit']")
+                    self.webdriver.execute_script("arguments[0].click();", select_button)
+                    message = "Load ID: " + info_array[0] + "\nPick up: " + info_array[5] + " " + info_array[6] + "\n"
+                    message += "Delivery: " + info_array[9] + " " + info_array[10] + "\n" + "Pay: " + info_array[13]
+                    print("staged " + order_id)
+                    self.sendMessage(message)
+                    self.addData(info_array[0])
+                    return self.one_way(pick_up[0])
+        
+            self.refreshPage()
         
                                 
         
@@ -201,9 +287,8 @@ class acv():
 
         while True:
 
-            print("function call")
-            print("searching " + pick_up)
-               
+            print("function call one way filter")
+            print("searching " + pick_up)   
             self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
             table = self.webdriver.find_element_by_xpath("//table[2]")
             for row in table.find_elements_by_xpath(".//tr[@class='rowheight']"):
@@ -240,7 +325,7 @@ class acv():
                             
     def iterateStatesOneWayHelper(self,pick_up, dollar,minDollar,  dist, condition):
         while True:
-            print("function call")
+            print("function call one way filter")
             print("searching " + pick_up)
             self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
             table = self.webdriver.find_element_by_xpath("//table[2]")
