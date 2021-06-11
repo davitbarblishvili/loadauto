@@ -113,6 +113,7 @@ class acv():
         return self.iterateStatesTwoWay(pick_up, delivery, dollar, minDollar, dist, condition)
 
     def one_way_no_filter(self,pick_up):
+        time.sleep(1)
         self.mainPage()
         self.webdriver.find_element_by_xpath("//select[@name='p_filter']/option[text()='"+ pick_up[0] + "']").click()
         self.webdriver.find_element_by_xpath("//select[@name='sort']/option[text()='Order ID']").click()
