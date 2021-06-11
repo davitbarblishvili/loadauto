@@ -138,7 +138,7 @@ class acv():
     def iterateStatesTwoWayNoFilter(self, pick_up, delivery):
         while True:
             print("function call two way no filter")
-            print("searching " + pick_up)
+            print("searching " + pick_up[0] + "to " + delivery[0])
 
             self.webdriver.find_element_by_xpath("//select[@name='perpage']/option[text()='All']").click()
             table = self.webdriver.find_element_by_xpath("//table[2]")
