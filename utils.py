@@ -3,11 +3,13 @@ from rq import get_current_job
 
 def no_filter_search(pick_up_state,delivery_state):
     acv = searcher.acv()
+    acv.initDatabase()
+    acv.setUp()
+    acv.login()
+
+    print("inside the function no filter")
     if len(delivery_state) == 1 and delivery_state[0] == '':
         print("inside the function no filter")
-        acv.initDatabase()
-        acv.setUp()
-        acv.login()
         acv.one_way_no_filter(pick_up_state)
         return 'OK'
     
