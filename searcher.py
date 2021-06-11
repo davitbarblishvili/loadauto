@@ -276,7 +276,7 @@ class acv():
                     print("staged " + order_id)
                     self.sendMessage(message)
                     self.addData(info_array[0])
-                    return self.one_way_no_filter(pick_up[0])
+                    return self.one_way_no_filter(pick_up)
         
             self.refreshPage()
         
