@@ -14,6 +14,10 @@ class acv():
     def __init__(self):
         print("acv instantiated")
 
+    def __exit__(self):
+        self.checked_ids = []
+        print("array size is " + len(self.checked_ids))
+        
     def sendMessage(self,textMessage):
         account_sid = 'ACfdaf54ef106ea4f48fae9e78588cd69e'
         auth_token = 'fb15a4c98079021641376ca358215f79'
