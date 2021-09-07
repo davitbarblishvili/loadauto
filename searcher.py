@@ -19,7 +19,7 @@ class acv():
 
     def sendMessage(self, textMessage):
         contents = [textMessage]
-        self.yag.send('righttimenyc@yahoo.com', 'New Load Alert', contents)
+        self.yag.send('kataloads@gmail.com', 'New Load Alert', contents)
 
     def initDatabase(self):
         cred = credentials.Certificate(
