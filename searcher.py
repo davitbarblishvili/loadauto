@@ -1,3 +1,4 @@
+from re import M
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import firebase_admin
@@ -5,6 +6,7 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 import time
 import yagmail
+from multiprocessing import Process
 
 
 class acv():
@@ -235,7 +237,10 @@ class acv():
                                 info_array[9] + " " + info_array[10] + \
                                 "\n" + "Pay: " + info_array[13]
                             print("staged " + order_id)
-                            self.sendMessage(message)
+                            process = Process(
+                                target=self.sendMessage, args=(message))
+                            process.start()
+                            process.join()
                             self.addData(info_array[0])
                             return self.two_way(pick_up, delivery, dollar, minDollar,  dist, condition)
 
