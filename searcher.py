@@ -192,12 +192,7 @@ class acv():
                     process.start()
                     process.join()
 
-                    process_add = Process(
-                        target=self.addData, args=(info_array[0]))
-
-                    process_add.start()
-                    process_add.join()
-
+                    self.addData(info_array[0])
                     return self.two_way_no_filter(pick_up, delivery)
 
             self.refreshPage()
@@ -250,12 +245,8 @@ class acv():
                                 target=self.sendMessage, args=(message))
                             process.start()
                             process.join()
-                            process_add = Process(
-                                target=self.addData, args=(info_array[0]))
-
-                            process_add.start()
-                            process_add.join()
-                    return self.two_way(pick_up, delivery, dollar, minDollar,  dist, condition)
+                            self.addData(info_array[0])
+                            return self.two_way(pick_up, delivery, dollar, minDollar,  dist, condition)
 
             self.refreshPage()
 
@@ -304,11 +295,7 @@ class acv():
                                 target=self.sendMessage, args=(message))
                             process.start()
                             process.join()
-                            process_add = Process(
-                                target=self.addData, args=(info_array[0]))
-
-                            process_add.start()
-                            process_add.join()
+                            self.addData(info_array[0])
                             return self.two_way(pick_up, delivery, dollar, minDollar, dist, condition)
             self.refreshPage()
 
@@ -352,11 +339,7 @@ class acv():
                         target=self.sendMessage, args=(message))
                     process.start()
                     process.join()
-                    process_add = Process(
-                        target=self.addData, args=(info_array[0]))
-
-                    process_add.start()
-                    process_add.join()
+                    self.addData(info_array[0])
                     return self.one_way_no_filter(pick_up)
 
             self.refreshPage()
@@ -410,11 +393,7 @@ class acv():
                                 target=self.sendMessage, args=(message))
                             process.start()
                             process.join()
-                            process_add = Process(
-                                target=self.addData, args=(info_array[0]))
-
-                            process_add.start()
-                            process_add.join()
+                            self.addData(info_array[0])
                             return self.one_way(pick_up, dollar, minDollar, dist, condition)
 
             self.refreshPage()
@@ -464,10 +443,6 @@ class acv():
                                 target=self.sendMessage, args=(message))
                             process.start()
                             process.join()
-                            process_add = Process(
-                                target=self.addData, args=(info_array[0]))
-
-                            process_add.start()
-                            process_add.join()
+                            self.addData(info_array[0])
                             return self.one_way(pick_up, dollar, minDollar,  dist, condition)
             self.refreshPage()
