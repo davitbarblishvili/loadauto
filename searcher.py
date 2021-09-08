@@ -70,9 +70,8 @@ class acv():
             "(//input[@class='btnstyle'])[3]").click()
 
     def mainPage(self):
-        pass
-       # self.webdriver.find_element_by_xpath(
-        # "(//a[@href='available.php'])[1]").click()
+        self.webdriver.find_element_by_xpath(
+            "(//a[@href='available.php'])[1]").click()
 
     def one_way(self, pick_up, dollar, minDollar, dist, condition):
         time.sleep(2)
