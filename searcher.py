@@ -89,8 +89,9 @@ class acv():
             "(//input[@class='btnstyle'])[3]").click()
 
     def mainPage(self):
-        self.webdriver.find_element_by_xpath(
-            "(//a[@href='available.php'])[1]").click()
+        pass
+       # self.webdriver.find_element_by_xpath(
+        # "(//a[@href='available.php'])[1]").click()
 
     def one_way(self, pick_up, dollar, minDollar, dist, condition):
         time.sleep(1)
@@ -333,8 +334,8 @@ class acv():
                     print("staged " + order_id)
                     process = Process(
                         target=self.sendMessage, args=(message))
-                  #  process.start()
-                  #  process.join()
+                    process.start()
+                    process.join()
                     return self.one_way_no_filter(pick_up)
 
             self.refreshPage()
