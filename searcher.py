@@ -189,8 +189,8 @@ class acv():
                     print("staged " + order_id)
                     process = Process(
                         target=self.sendMessage, args=(message))
-                    process.start()
-                    process.join()
+                  #  process.start()
+               #     process.join()
                     return self.two_way_no_filter(pick_up, delivery)
 
             self.refreshPage()
@@ -241,8 +241,8 @@ class acv():
                             print("staged " + order_id)
                             process = Process(
                                 target=self.sendMessage, args=(message))
-                            process.start()
-                            process.join()
+                     #       process.start()
+                    #        process.join()
                             return self.two_way(pick_up, delivery, dollar, minDollar,  dist, condition)
 
             self.refreshPage()
@@ -290,8 +290,8 @@ class acv():
                             print("staged " + order_id)
                             process = Process(
                                 target=self.sendMessage, args=(message))
-                            process.start()
-                            process.join()
+                   #         process.start()
+                   #         process.join()
                             return self.two_way(pick_up, delivery, dollar, minDollar, dist, condition)
             self.refreshPage()
 
@@ -333,8 +333,8 @@ class acv():
                     print("staged " + order_id)
                     process = Process(
                         target=self.sendMessage, args=(message))
-                    process.start()
-                    process.join()
+                  #  process.start()
+                  #  process.join()
                     return self.one_way_no_filter(pick_up)
 
             self.refreshPage()
@@ -386,8 +386,8 @@ class acv():
                             print("staged " + order_id)
                             process = Process(
                                 target=self.sendMessage, args=(message))
-                            process.start()
-                            process.join()
+                          #  process.start()
+                          #  process.join()
                             return self.one_way(pick_up, dollar, minDollar, dist, condition)
 
             self.refreshPage()
@@ -435,7 +435,7 @@ class acv():
                             print("staged " + order_id)
                             process = Process(
                                 target=self.sendMessage, args=(message))
-                            process.start()
-                            process.join()
+                      #      process.start()
+                      #      process.join()
                             return self.one_way(pick_up, dollar, minDollar,  dist, condition)
             self.refreshPage()
