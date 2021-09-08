@@ -23,25 +23,6 @@ class acv():
         contents = [textMessage]
         self.yag.send('kataloads@gmail.com', 'New Load Alert', contents)
 
-    def initDatabase(self):
-        cred = credentials.Certificate(
-            "./acvdatabase-firebase-adminsdk-er7dp-d4bdc9c2cf.json")
-        firebase_admin.initialize_app(cred)
-
-    def addData(self, load):
-        data = {
-            u'staged': True
-        }
-        db = firestore.client()
-        db.collection(u'loadIds').document(load).set(data)
-
-    def addLoad(self, load):
-        data = {
-            u'checked': True
-        }
-        db = firestore.client()
-        db.collection(u'checkIds').document(load).set(data)
-
     def checkData(self, load):
         db = firestore.client()
         doc_ref = db.collection('loadIds').document(load)
@@ -174,25 +155,25 @@ class acv():
                 for td in row.find_elements_by_xpath(".//td[@class='arial14']"):
                     if td.text:
                         info_array.append(td.text)
-                if self.checkData(info_array[0]) == False:
-                    self.webdriver.execute_script(
-                        "arguments[0].click();", check_box[1])
-                    select_button = self.webdriver.find_element_by_xpath(
-                        "//input[@name='Submit']")
-                    self.webdriver.execute_script(
-                        "arguments[0].click();", select_button)
-                    message = "Load ID: " + \
-                        info_array[0] + "\nPick up: " + \
-                        info_array[5] + " " + info_array[6] + "\n"
-                    message += "Delivery: " + \
-                        info_array[9] + " " + info_array[10] + \
-                        "\n" + "Pay: " + info_array[13]
-                    print("staged " + order_id)
-                    process = Process(
-                        target=self.sendMessage, args=(message))
-                  #  process.start()
+
+                self.webdriver.execute_script(
+                    "arguments[0].click();", check_box[1])
+                select_button = self.webdriver.find_element_by_xpath(
+                    "//input[@name='Submit']")
+                self.webdriver.execute_script(
+                    "arguments[0].click();", select_button)
+                message = "Load ID: " + \
+                    info_array[0] + "\nPick up: " + \
+                    info_array[5] + " " + info_array[6] + "\n"
+                message += "Delivery: " + \
+                    info_array[9] + " " + info_array[10] + \
+                    "\n" + "Pay: " + info_array[13]
+                print("staged " + order_id)
+                process = Process(
+                    target=self.sendMessage, args=(message))
+                #  process.start()
                #     process.join()
-                    return self.two_way_no_filter(pick_up, delivery)
+                return self.two_way_no_filter(pick_up, delivery)
 
             self.refreshPage()
 
@@ -318,25 +299,25 @@ class acv():
                 for td in row.find_elements_by_xpath(".//td[@class='arial14']"):
                     if td.text:
                         info_array.append(td.text)
-                if self.checkData(info_array[0]) == False:
-                    self.webdriver.execute_script(
-                        "arguments[0].click();", check_box[1])
-                    select_button = self.webdriver.find_element_by_xpath(
-                        "//input[@name='Submit']")
-                    self.webdriver.execute_script(
-                        "arguments[0].click();", select_button)
-                    message = "Load ID: " + \
-                        info_array[0] + "\nPick up: " + \
-                        info_array[5] + " " + info_array[6] + "\n"
-                    message += "Delivery: " + \
-                        info_array[9] + " " + info_array[10] + \
-                        "\n" + "Pay: " + info_array[13]
-                    print("staged " + order_id)
-                    process = Process(
-                        target=self.sendMessage, args=(message))
-                   # process.start()
-                 #   process.join()
-                    return self.one_way_no_filter(pick_up)
+
+                self.webdriver.execute_script(
+                    "arguments[0].click();", check_box[1])
+                select_button = self.webdriver.find_element_by_xpath(
+                    "//input[@name='Submit']")
+                self.webdriver.execute_script(
+                    "arguments[0].click();", select_button)
+                message = "Load ID: " + \
+                    info_array[0] + "\nPick up: " + \
+                    info_array[5] + " " + info_array[6] + "\n"
+                message += "Delivery: " + \
+                    info_array[9] + " " + info_array[10] + \
+                    "\n" + "Pay: " + info_array[13]
+                print("staged " + order_id)
+                process = Process(
+                    target=self.sendMessage, args=(message))
+                # process.start()
+                #   process.join()
+                return self.one_way_no_filter(pick_up)
 
             self.refreshPage()
 
