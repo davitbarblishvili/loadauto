@@ -40,13 +40,13 @@ class acv():
         GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google-chrome'
         CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
         option.add_argument('--no-sandbox')
-        option.add_argument('headless')
+       # option.add_argument('headless')
         option.add_argument('--disable-gpu')
         option.add_argument('--disable-dev-shm-usage')
         option.binary_location = GOOGLE_CHROME_PATH
         self.webdriver = webdriver.Chrome(
             executable_path=CHROMEDRIVER_PATH, options=option)
-      #  self.webdriver = webdriver.Chrome('./chromedriver',options=option)
+        self.webdriver = webdriver.Chrome('./chromedriver', options=option)
         self.webdriver.get(
             "https://transport.acvauctions.com/jobs/available.php")
 
