@@ -71,7 +71,7 @@ pylint==1.9.4
 pyOpenSSL==20.0.1
 pyparsing==2.4.7
 pytz==2021.1
-PyYAML==5.3.1
+PyYAML==5.4
 queuelib==1.6.1
 redis==3.5.3
 requests==2.18.4
