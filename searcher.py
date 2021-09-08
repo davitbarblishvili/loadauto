@@ -20,7 +20,12 @@ class acv():
         print("array size is " + str(len(self.checked_ids)))
 
     def sendMessage(self, textMessage):
-        contents = [textMessage]
+        process = Process(target=self.send, args=(textMessage,))
+        process.start()
+        process.join()
+
+    def send(self, message):
+        contents = [message]
         self.yag.send('kataloads@gmail.com', 'New Load Alert', contents)
 
     def checkData(self, load):
@@ -168,10 +173,7 @@ class acv():
                     info_array[9] + " " + info_array[10] + \
                     "\n" + "Pay: " + info_array[13]
                 print("staged " + order_id)
-                process = Process(
-                    target=self.sendMessage, args=(message))
-                #  process.start()
-               #     process.join()
+                self.sendMessage(message)
                 return self.two_way_no_filter(pick_up, delivery)
 
             self.refreshPage()
@@ -220,10 +222,7 @@ class acv():
                                 info_array[9] + " " + info_array[10] + \
                                 "\n" + "Pay: " + info_array[13]
                             print("staged " + order_id)
-                            process = Process(
-                                target=self.sendMessage, args=(message))
-                     #       process.start()
-                    #        process.join()
+                            self.sendMessage(message)
                             return self.two_way(pick_up, delivery, dollar, minDollar,  dist, condition)
 
             self.refreshPage()
@@ -269,10 +268,7 @@ class acv():
                                 info_array[9] + " " + info_array[10] + \
                                 "\n" + "Pay: " + info_array[13]
                             print("staged " + order_id)
-                            process = Process(
-                                target=self.sendMessage, args=(message))
-                   #         process.start()
-                   #         process.join()
+                            self.sendMessage(message)
                             return self.two_way(pick_up, delivery, dollar, minDollar, dist, condition)
             self.refreshPage()
 
@@ -312,10 +308,8 @@ class acv():
                     info_array[9] + " " + info_array[10] + \
                     "\n" + "Pay: " + info_array[13]
                 print("staged " + order_id)
-                process = Process(
-                    target=self.sendMessage, args=(message))
-                # process.start()
-                #   process.join()
+
+                self.sendMessage(message)
                 return self.one_way_no_filter(pick_up)
 
             self.refreshPage()
@@ -365,10 +359,7 @@ class acv():
                                 info_array[9] + " " + info_array[10] + \
                                 "\n" + "Pay: " + info_array[13]
                             print("staged " + order_id)
-                            process = Process(
-                                target=self.sendMessage, args=(message))
-                          #  process.start()
-                          #  process.join()
+                            self.sendMessage(message)
                             return self.one_way(pick_up, dollar, minDollar, dist, condition)
 
             self.refreshPage()
@@ -414,9 +405,6 @@ class acv():
                                 info_array[9] + " " + info_array[10] + \
                                 "\n" + "Pay: " + info_array[13]
                             print("staged " + order_id)
-                            process = Process(
-                                target=self.sendMessage, args=(message))
-                      #      process.start()
-                      #      process.join()
+                            self.sendMessage(message)
                             return self.one_way(pick_up, dollar, minDollar,  dist, condition)
             self.refreshPage()
