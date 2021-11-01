@@ -48,6 +48,7 @@ class acv():
         option.add_argument('headless')
         option.add_argument('--disable-gpu')
         option.add_argument('--disable-dev-shm-usage')
+<<<<<<< Updated upstream
         option.binary_location = GOOGLE_CHROME_PATH
         self.webdriver = webdriver.Chrome(
             executable_path=CHROMEDRIVER_PATH, options=option)
@@ -55,6 +56,13 @@ class acv():
         self.webdriver.get(
             "https://transport.acvauctions.com/jobs/available.php")
 
+=======
+      #  option.binary_location = GOOGLE_CHROME_PATH
+      #  self.webdriver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH,options=option)
+        self.webdriver = webdriver.Chrome('./chromedriver',options=option)
+        self.webdriver.get("https://transport.acvauctions.com/jobs/available.php")
+    
+>>>>>>> Stashed changes
     def close(self):
         self.webdriver.close()
 
