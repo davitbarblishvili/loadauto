@@ -48,21 +48,12 @@ class acv():
         option.add_argument('headless')
         option.add_argument('--disable-gpu')
         option.add_argument('--disable-dev-shm-usage')
-<<<<<<< Updated upstream
-        option.binary_location = GOOGLE_CHROME_PATH
-        self.webdriver = webdriver.Chrome(
-            executable_path=CHROMEDRIVER_PATH, options=option)
-      # self.webdriver = webdriver.Chrome('./chromedriver',options=option)
+      #  option.binary_location = GOOGLE_CHROME_PATH
+      #  self.webdriver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH,options=option)
+        self.webdriver = webdriver.Chrome('./chromedriver', options=option)
         self.webdriver.get(
             "https://transport.acvauctions.com/jobs/available.php")
 
-=======
-      #  option.binary_location = GOOGLE_CHROME_PATH
-      #  self.webdriver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH,options=option)
-        self.webdriver = webdriver.Chrome('./chromedriver',options=option)
-        self.webdriver.get("https://transport.acvauctions.com/jobs/available.php")
-    
->>>>>>> Stashed changes
     def close(self):
         self.webdriver.close()
 
@@ -71,11 +62,11 @@ class acv():
         username = self.webdriver.find_element_by_xpath(
             "//input[@name='email']")
         self.webdriver.execute_script("arguments[0].click();", username)
-        username.send_keys("righttimenyc@yahoo.com")
+        username.send_keys("dispatch@greenlightautotrans.com")
         password = self.webdriver.find_element_by_xpath(
             "//input[@name='password']")
         self.webdriver.execute_script("arguments[0].click();", password)
-        password.send_keys("Tsikara95#")
+        password.send_keys("Greenlight111")
         password.send_keys(Keys.ENTER)
 
     def refreshPage(self):
